@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core", "syntaxer.core.csproj", "{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF06D43B-B75B-450D-8B87-B9261BFE7741}
+	EndGlobalSection
+EndGlobal
