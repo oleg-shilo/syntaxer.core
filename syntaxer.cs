@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Intellisense.Common;
 using RoslynIntellisense;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("syntaxer.core.tests")]
 
 //using csscript;
 
@@ -80,6 +84,7 @@ namespace Syntaxer
 
         static void Main(string[] args)
         {
+            // var ttt = AppDomain.CurrentDomain.GetAssemblies();
             // TestGenerateProjectFor(); return;
             // Debug.Assert(false);
 

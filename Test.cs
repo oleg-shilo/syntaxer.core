@@ -135,43 +135,6 @@ static class Extensions
             }
         }
 
-        public static void Project()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Output.WriteLine("Generating project: ");
-
-                Project project = CSScriptHelper.GenerateProjectFor(new SourceInfo(script));
-                project.Files.ToList().ForEach(x => Output.WriteLine("    file: " + x));
-                project.Refs.ToList().ForEach(x => Output.WriteLine("    ref: " + x));
-                project.SearchDirs.ToList().ForEach(x => Output.WriteLine("    searchDir: " + x));
-
-                Output.WriteLine("OK - " + project.Files.Concat(project.Refs).Concat(project.SearchDirs).Count() + " project item(s)");
-            });
-        }
-
-        public static void Completion()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Console.Write("Autocompletion: ");
-
-                string code = SyntaxProvider.testCode7b;
-
-                File.WriteAllText(script, code);
-
-                var caret = code.IndexOf("info.ver") + "info.ver".Length;
-                string word = code.WordAt(caret);
-
-                var completions = TestServices.GetCompletion(script, caret);
-
-                Output.WriteLine("OK - " + completions.Count() + " completion item(s)...");
-                Output.WriteLine("    '" + completions.GetLines().FirstOrDefault(x => x.StartsWith(word)) + "'");
-            });
-        }
-
         public static void AssignmentCompletion()
         {
             TestScript(script =>
@@ -232,30 +195,6 @@ static class Extensions
             }, local: true);
         }
 
-        // static void TestCSSCompletion2()
-        // {
-        //     TestScript(script =>
-        //     {
-        //         Console.Write("CS-Script 'Include' Autocompletion: ");
-
-        //         string code = "  //css_inc  test.cs";
-        //         File.WriteAllText(script, code);
-
-        //         var caret = 12;
-        //         var completions = SyntaxProvider.GetCompletion(script, caret);
-
-        //         Console.WriteLine("OK");
-
-        //         caret = 12;
-        //         var word = code.WordAt(caret, true);
-        //         var line = code.LineAt(caret);
-
-        //         completions = SyntaxProvider.GetCompletion(script, caret);
-
-        //         // Console.WriteLine("    '" + completions.Split('\n').FirstOrDefault(x => x.StartsWith(word)) + "'");
-        //     });
-        // }
-
         public static void CSSResolving()
         {
             TestScript(script =>
@@ -308,30 +247,6 @@ static class Extensions
             });
         }
 
-        public static void Resolving()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Output.Write("Resolve symbol: ");
-                string code = SyntaxProvider.testCode7b;
-
-                File.WriteAllText(script, code);
-
-                var pattern = "Console.Write";
-                // pattern = "info.ver";
-                pattern = "System.IO.StreamReader fi";
-
-                var caret = code.IndexOf(pattern) + pattern.Length;
-                string word = code.WordAt(caret);
-
-                var region = TestServices.Resolve(script, caret);
-
-                Output.WriteLine("OK - " + 1 + " symbol info item(s)...");
-                Output.WriteLine("    '" + region.GetLines().FirstOrDefault() + "'");
-            });
-        }
-
         public static void Renaming()
         {
             TestScript(script =>
@@ -351,90 +266,6 @@ static class Extensions
 
                 Output.WriteLine("OK - " + 1 + " symbol info item(s)...");
                 Output.WriteLine("    '" + region.GetLines().FirstOrDefault() + "'");
-            });
-        }
-
-        public static void SignatureHelp()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Output.Write("Generate signature help: ");
-                string code = @"using System;
-class Program
-{
-    static void Main(string[] args)
-    {
-        Console.WriteLine(22
-        // Console.WriteLine(5.ToString(), 33,
-    }
-}";
-                // Console.WriteLine(22,
-
-                File.WriteAllText(script, code);
-
-                // var pattern = "WriteLine(";
-                var pattern = "22";
-
-                var caret = code.IndexOf(pattern) + pattern.Length;
-                string word = code.WordAt(caret);
-
-                var region = TestServices.GetSignatureHelp(script, caret);
-
-                Output.WriteLine("OK - " + 1 + " symbol info item(s)...");
-                Output.WriteLine("    '" + region.GetLines().FirstOrDefault() + "'");
-            });
-        }
-
-        public static void SuggestUsings()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Output.Write("SuggestUsings: ");
-                string code = @"using System;
-class Program
-{
-    static void Main(string[] args)
-    {
-        File
-    }
-}";
-
-                File.WriteAllText(script, code);
-
-                var pattern = "File";
-
-                var caret = code.IndexOf(pattern) + pattern.Length;
-                string word = code.WordAt(caret);
-
-                var region = TestServices.FindUsings(script, "File");
-
-                Output.WriteLine("OK - " + 1 + " symbol info item(s)...");
-                Output.WriteLine("    '" + region.GetLines().FirstOrDefault() + "'");
-            });
-        }
-
-        public static void Tooltip()
-        {
-            TestScript(script =>
-            {
-                Output.WriteLine("---");
-                Output.Write("Get tooltip: ");
-                string code = SyntaxProvider.testCode7b;
-
-                File.WriteAllText(script, code);
-
-                var pattern = "Console.Write";
-                // pattern = "info.ver";
-
-                var caret = code.IndexOf(pattern) + pattern.Length;
-                string word = code.WordAt(caret);
-
-                var tooltip = TestServices.GetTooltip(script, caret, null, true);
-
-                Output.WriteLine("OK");
-                Output.WriteLine("    '" + tooltip.GetLines().FirstOrDefault() + "'");
             });
         }
     }

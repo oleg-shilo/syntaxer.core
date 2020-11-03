@@ -13,6 +13,7 @@ namespace RoslynIntellisense
     {
         static int Main(string[] args)
         {
+            var ttt = AppDomain.CurrentDomain.GetAssemblies();
             //AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             //Debug.Assert(false);
 

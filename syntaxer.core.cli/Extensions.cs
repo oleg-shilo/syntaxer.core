@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Syntaxer
 {
-    public class SourceInfo
+    class SourceInfo
     {
         static char[] lineDelimiters = new[] { '\n' };
 
@@ -31,12 +31,11 @@ namespace Syntaxer
                 }
             }
         }
+
         public string RawFile;
         public string File;
         public string Content;
     }
-
-
 
     // There is NodeLabelEditEventArgs warranty that `Console.WriteLine` is always a safe call.
     // Particularly because the code is to be run on various OS and runtimes.
@@ -427,80 +426,6 @@ namespace Syntaxer
         public static void WriteAllText(this TcpClient client, string data)
         {
             client.WriteAllBytes(data.GetBytes());
-        }
-    }
-
-    public static class ProcessExtensions
-    {
-        private static string FindIndexedProcessName(int pid)
-        {
-            var processName = Process.GetProcessById(pid).ProcessName;
-            var processesByName = Process.GetProcessesByName(processName);
-            string processIndexdName = null;
-
-            for (var index = 0; index < processesByName.Length; index++)
-            {
-                processIndexdName = index == 0 ? processName : processName + "#" + index;
-                var processId = new PerformanceCounter("Process", "ID Process", processIndexdName);
-                if ((int)processId.NextValue() == pid)
-                {
-                    return processIndexdName;
-                }
-            }
-
-            return processIndexdName;
-        }
-
-        static Process FindPidFromIndexedProcessName(string indexedProcessName)
-        {
-            var parentId = new PerformanceCounter("Process", "Creating Process ID", indexedProcessName);
-            return Process.GetProcessById((int)parentId.NextValue());
-        }
-
-        public static Process Parent(this Process process)
-        {
-            try
-            {
-                return FindPidFromIndexedProcessName(FindIndexedProcessName(process.Id));
-            }
-            catch { }
-            return null;
-        }
-
-        public static void KillGroup(this Process process, Func<Process, bool> childrenHint = null)
-        {
-            foreach (var item in process.Children(childrenHint).Concat(new[] { process }))
-                try { item.Kill(); }
-                catch { }
-        }
-
-        public static IEnumerable<Process> Children(this Process process, Func<Process, bool> hint = null)
-        {
-            var items = Process.GetProcesses()
-                               .Where(p => hint == null || hint(p))
-                               .Select(p => new { Process = p, Parent = p.Parent() })
-                               .Where(x => x.Parent != null && x.Parent.Id == process.Id)
-                               .Select(x => x.Process)
-                               .ToArray();
-            return items;
-        }
-
-        public static int GetParentProcessIdOnLinux(int processId)
-        {
-            string line;
-            using (StreamReader reader = new StreamReader("/proc/" + processId + "/stat"))
-                line = reader.ReadLine();
-
-            int endOfName = line.LastIndexOf(')');
-            string[] parts = line.Substring(endOfName).Split(new char[] { ' ' }, 4);
-
-            if (parts.Length >= 3)
-            {
-                int ppid = Int32.Parse(parts[2]);
-                return ppid;
-            }
-
-            return -1;
         }
     }
 

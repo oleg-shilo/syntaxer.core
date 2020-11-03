@@ -24,10 +24,10 @@ namespace Syntaxer
     }
 
     //need to use reflection so cscs.exe can be remapped dynamically
-    internal static class csscript
+    public static class csscript
     {
-        internal static string default_cscs_path = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("cscs.exe");
-        internal static string default_cscs_path2 = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("..", "cscs.exe");
+        internal static string default_cscs_path = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("cscs.dll");
+        internal static string default_cscs_path2 = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("..", "cscs.dll");
 
         internal static void Log(string message)
         {

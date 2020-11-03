@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core", "syntaxer.core.csproj", "{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core.cli", "syntaxer.core.cli\syntaxer.core.cli.csproj", "{6D7E3848-73E1-4776-ABC9-90613CB09355}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core.tests", "syntaxer.core.tests\syntaxer.core.tests.csproj", "{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D7E3848-73E1-4776-ABC9-90613CB09355}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D7E3848-73E1-4776-ABC9-90613CB09355}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D7E3848-73E1-4776-ABC9-90613CB09355}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D7E3848-73E1-4776-ABC9-90613CB09355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
