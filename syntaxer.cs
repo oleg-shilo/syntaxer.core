@@ -40,6 +40,14 @@ namespace Syntaxer
     {
         static void Main(string[] args)
         {
+            if (!args.Any() || args.Contains("-?") || args.Contains("--help") || args.Contains("-help"))
+            {
+                Console.WriteLine("CS-Syntaxer v" + Assembly.GetExecutingAssembly().GetName().Version);
+                Console.WriteLine("Syntax provider for C# scripts (cs-script).");
+                Console.WriteLine("Copyright (C) 2021 Oleg Shilo (github.com/oleg-shilo/syntaxer.core)");
+                return;
+            }
+
             var input = new Args(args);
 
             // -listen -timeout:60000 -cscs_path:./cscs.exe

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>cs-syntaxer</id>
+        <version>3.0.1.0</version>
+        <title>CS-Syntaxer</title>
+        <authors>Oleg Shilo</authors>
+        <owners>Oleg Shilo</owners>
+        <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+        <projectUrl>https://github.com/oleg-shilo/syntaxer.core</projectUrl>
+        <packageSourceUrl>https://github.com/oleg-shilo/syntaxer.core</packageSourceUrl>
+        <bugTrackerUrl>https://github.com/oleg-shilo/syntaxer.core/issues</bugTrackerUrl>
+        <docsUrl>https://github.com/oleg-shilo/syntaxer.core/wiki</docsUrl>
+        <iconUrl>https://raw.githubusercontent.com/oleg-shilo/cs-script/master/src/wiki/css_logo_codeplex_256x256.png
+        </iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text) </description>
+        <summary>CS-Syntaxer</summary>
+        <releaseNotes>
+# Release v3.0.1.0
+- Added auto-discovery of installed CS-Script
+- Added support for probing directories: DesktopApp and WebApp
+        </releaseNotes>
+        <copyright>Oleg Shilo</copyright>
+        <tags>cs-script C# syntax IDE</tags>
+        <dependencies>
+            <dependency id="cs-script" version="4.1.0.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="tools\chocolateyBeforeModify.ps1" target="tools\chocolateyBeforeModify.ps1" />
+        <file src="tools\chocolateyInstall.ps1" target="tools\chocolateyInstall.ps1" />        
+        <file src="tools\chocolateyUninstall.ps1" target="tools\chocolateyUninstall.ps1" />
+    </files>
+</package>

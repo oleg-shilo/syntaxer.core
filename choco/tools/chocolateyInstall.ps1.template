@@ -1,0 +1,13 @@
+﻿$packageName = 'CS-Syntaxer'
+$url = ???
+
+Stop-Process -Name "syntaxer" -ErrorAction SilentlyContinue
+
+$installDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+Install-ChocolateyEnvironmentVariable 'CSSYNTAXER_ROOT' $installDir User
+
+$checksum = ???
+$checksumType = "sha256"
+
+# Download and unpack a zip file
+Install-ChocolateyZipPackage "$packageName" "$url" "$installDir" -checksum $checksum -checksumType $checksumType

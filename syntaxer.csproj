@@ -7,24 +7,42 @@
     <AssemblyName>syntaxer</AssemblyName>
     <AssemblyVersion>3.0.1.0</AssemblyVersion>
     <FileVersion>3.0.1.0</FileVersion>
-    <Version>3.0.1</Version>
+    <Version>3.0.1.0</Version>
     <PackageReleaseNotes>- Added auto-discovery of installed CS-Script
 - Added support for probing directories: DesktopApp and WebApp</PackageReleaseNotes>
+    <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
+    <Authors>Oleg Shilo</Authors>
+    <Copyright>(C) 2021 Oleg Shilo</Copyright>
+    <PackageId>cs-syntaxer</PackageId>
+    <Product>cs-syntaxer</Product>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/oleg-shilo/syntaxer.core/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/oleg-shilo/syntaxer.core/</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>cs-script C# syntax IDE</PackageTags>
+    <PackageIcon>css_logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="choco\**" />
     <Compile Remove="syntaxer.cli\**" />
     <Compile Remove="syntaxer.core.cli\**" />
     <Compile Remove="syntaxer.core.tests\**" />
     <Compile Remove="syntaxer.tests\**" />
+    <EmbeddedResource Remove="choco\**" />
     <EmbeddedResource Remove="syntaxer.cli\**" />
     <EmbeddedResource Remove="syntaxer.core.cli\**" />
     <EmbeddedResource Remove="syntaxer.core.tests\**" />
     <EmbeddedResource Remove="syntaxer.tests\**" />
+    <None Remove="choco\**" />
     <None Remove="syntaxer.cli\**" />
     <None Remove="syntaxer.core.cli\**" />
     <None Remove="syntaxer.core.tests\**" />
     <None Remove="syntaxer.tests\**" />
+    <None Include="logo\css_logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -47,7 +65,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="md &quot;$(ProjectDir)out&quot;&#xD;&#xA;md &quot;$(ProjectDir)out\runtimes&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.exe&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.json&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)runtimes&quot;  &quot;$(ProjectDir)out\runtimes&quot; /s /i /y" />
+    <Exec Command="rem md &quot;$(ProjectDir)out&quot;&#xD;&#xA;rem md &quot;$(ProjectDir)out\runtimes&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.dll&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.exe&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.json&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem xcopy &quot;$(TargetDir)runtimes&quot;  &quot;$(ProjectDir)out\runtimes&quot; /s /i /y" />
   </Target>
 
 </Project>
