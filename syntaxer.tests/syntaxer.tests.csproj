@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\syntaxer.core.csproj" />
+    <ProjectReference Include="..\syntaxer.csproj" />
   </ItemGroup>
 
 

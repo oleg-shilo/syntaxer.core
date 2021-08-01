@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core", "syntaxer.core.csproj", "{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer", "syntaxer.csproj", "{DEA7B0EC-1FDE-4A0D-B933-688A8AD78A2A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core.cli", "syntaxer.core.cli\syntaxer.core.cli.csproj", "{6D7E3848-73E1-4776-ABC9-90613CB09355}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.cli", "syntaxer.cli\syntaxer.cli.csproj", "{6D7E3848-73E1-4776-ABC9-90613CB09355}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.core.tests", "syntaxer.core.tests\syntaxer.core.tests.csproj", "{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "syntaxer.tests", "syntaxer.tests\syntaxer.tests.csproj", "{1717E0B8-E6DE-493C-B0EA-E77F6F588B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

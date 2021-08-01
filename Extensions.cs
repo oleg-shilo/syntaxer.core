@@ -31,12 +31,11 @@ namespace Syntaxer
                 }
             }
         }
+
         public string RawFile;
         public string File;
         public string Content;
     }
-
-
 
     // There is NodeLabelEditEventArgs warranty that `Console.WriteLine` is always a safe call.
     // Particularly because the code is to be run on various OS and runtimes.
@@ -372,9 +371,17 @@ namespace Syntaxer
             var output = new StringBuilder();
 
             var proc = new Process();
-            proc.StartInfo.FileName = exe;
+            if (exe.ToLower().EndsWith(".dll"))
+            {
+                proc.StartInfo.FileName = "dotnet";
+                proc.StartInfo.Arguments = $"\"{exe}\" {args}";
+            }
+            else
+            {
+                proc.StartInfo.FileName = exe;
+                proc.StartInfo.Arguments = args;
+            }
             proc.StartInfo.WorkingDirectory = Path.GetDirectoryName(exe);
-            proc.StartInfo.Arguments = args;
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.RedirectStandardOutput = true;
             proc.StartInfo.CreateNoWindow = true;
@@ -432,6 +439,8 @@ namespace Syntaxer
 
     public static class ProcessExtensions
     {
+#pragma warning disable CA1416 // Validate platform compatibility (only used on Windows)
+
         private static string FindIndexedProcessName(int pid)
         {
             var processName = Process.GetProcessById(pid).ProcessName;
@@ -456,6 +465,8 @@ namespace Syntaxer
             var parentId = new PerformanceCounter("Process", "Creating Process ID", indexedProcessName);
             return Process.GetProcessById((int)parentId.NextValue());
         }
+
+#pragma warning restore CA1416 // Validate platform compatibility
 
         public static Process Parent(this Process process)
         {

@@ -152,6 +152,14 @@ namespace RoslynIntellisense
             return property.GetValue(obj, null);
         }
 
+        public static object GetStaticProp(this Type type, string name)
+        {
+            var property = type.GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            if (property == null)
+                throw new Exception("ReflectionExtensions: cannot find property " + name);
+            return property.GetValue(null, null);
+        }
+
         public static bool HasExtension(this string file, string extension)
         {
             return string.Compare(Path.GetExtension(file), extension, true) == 0;

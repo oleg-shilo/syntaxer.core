@@ -28,6 +28,7 @@ namespace Syntaxer
     {
         internal static string default_cscs_path = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("cscs.dll");
         internal static string default_cscs_path2 = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("..", "cscs.dll");
+        internal static string default_cscs_path3 = Environment.GetEnvironmentVariable("CSSCRIPT_ROOT").PathJoin("cscs.dll");
 
         internal static void Log(string message)
         {
@@ -39,6 +40,8 @@ namespace Syntaxer
             //File.WriteAllText(file, message);
             Output.WriteLine(message);
         }
+
+        static MethodInfo GenerateProjectFor_Method;
 
         internal static Assembly _cscs_asm;
 
@@ -57,9 +60,20 @@ namespace Syntaxer
                             if (cscs_path.IsEmpty())
                                 csscript.Log($"Error: cscs_path is empty");
                             _cscs_asm = Assembly.Load(File.ReadAllBytes(cscs_path));
+
+                            GenerateProjectFor_Method = _cscs_asm.GetLoadableTypes()
+                                                                 .FirstOrDefault(t => t.Name == "ProjectBuilder")
+                                                                 .GetMethod("GenerateProjectFor", BindingFlags.Public | BindingFlags.Static);
+
+                            var runtime_class = _cscs_asm.GetLoadableTypes()
+                                                         .FirstOrDefault(t => t.Name == "Runtime");
+
+                            Environment.SetEnvironmentVariable("WINDOWS_DESKTOP_APP", (string)runtime_class.GetStaticProp("DesktopAssembliesDir"));
+                            Environment.SetEnvironmentVariable("WEB_APP", (string)runtime_class.GetStaticProp("WebAssembliesDir"));
                         }
                         catch (Exception e)
                         {
+                            _cscs_asm = null;
                             Log(e.ToString());
                             throw new Exception($"Cannot load cscs.exe assembly from {cscs_path}");
                         }
@@ -107,9 +121,6 @@ namespace Syntaxer
                 try
                 {
                     return Path.Combine(Path.GetDirectoryName(csscript._cscs_path), "css_config.xml");
-                    //var type = csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "ProjectBuilder").FirstOrDefault();
-                    //MethodInfo method = type.GetMethod("GetCSSConfig", BindingFlags.Public | BindingFlags.Static);
-                    //return (string) method.Invoke(null, new object[0]);
                 }
                 catch { }
                 return null;
@@ -117,17 +128,14 @@ namespace Syntaxer
 
             static object cscs_GenerateProjectFor(string script)
             {
-                var type = csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "ProjectBuilder").FirstOrDefault();
-                csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "ProjectBuilder").FirstOrDefault();
-                MethodInfo method = type.GetMethod("GenerateProjectFor", BindingFlags.Public | BindingFlags.Static);
-                return method.Invoke(null, new object[] { script });
+                return GenerateProjectFor_Method.Invoke(null, new object[] { script });
             }
 
             internal static string cscs_GetScriptTempDir()
             {
                 return (string)csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "CSExecutor").First()
                                                 .GetMethod("GetScriptTempDir", BindingFlags.Public | BindingFlags.Static)
-                                                    .Invoke(null, new object[0]);
+                                                .Invoke(null, new object[0]);
             }
 
             static public Project GenerateProjectFor(string script)

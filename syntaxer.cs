@@ -14,7 +14,7 @@ using RoslynIntellisense;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("syntaxer.core.tests")]
+[assembly: InternalsVisibleTo("syntaxer.tests")]
 
 //using csscript;
 
@@ -36,79 +36,22 @@ using System.Runtime.CompilerServices;
 
 namespace Syntaxer
 {
-    // Ports:
-    // 18000 - Sublime Text 3
-    // 18001 - Notepad++
-    // 18002 - VSCode.CodeMap
-    // 18003 - VSCode.CS-Script
     class Server
     {
-        // -port:18003 -listen -timeout:60000 cscs_path:C:\Users\<user>\AppData\Roaming\Code\User\cs-script.user\syntaxer\1.2.2.0\cscs.exe
-
-        static void test()
-        {
-            Int32 port = 18003;
-            IPAddress localAddr = IPAddress.Parse("127.0.0.1");
-
-            // TcpListener server = new TcpListener(port);
-            var server = new TcpListener(localAddr, port);
-
-            // Start listening for client requests.
-            server.Start();
-
-            // Buffer for reading data
-            // Byte[] bytes = new Byte[256];
-            // String data = null;
-
-            // Enter the listening loop.
-            while (true)
-            {
-                Console.Write("Waiting for a connection... ");
-
-                // Perform a blocking call to accept requests.
-                // You could also user server.AcceptSocket() here.
-                TcpClient client = server.AcceptTcpClient();
-                Console.WriteLine("Connected!");
-            }
-        }
-
-        static void TestGenerateProjectFor()
-        {
-            var script = @"E:\PrivateData\Galos\Projects\cs-script.core\src\cscs\bin\Debug\netcoreapp3.1\script.cs";
-            csscript.cscs_path = @"E:\PrivateData\Galos\Projects\cs-script.core\src\cscs\bin\Debug\netcoreapp3.1\cscs.dll";
-            var type = csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "ProjectBuilder").FirstOrDefault();
-            csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "ProjectBuilder").FirstOrDefault();
-            MethodInfo method = type.GetMethod("GenerateProjectFor", BindingFlags.Public | BindingFlags.Static);
-            var project = method.Invoke(null, new object[] { script });
-        }
-
         static void Main(string[] args)
         {
-            // var ttt = AppDomain.CurrentDomain.GetAssemblies();
-            // TestGenerateProjectFor(); return;
-            // Debug.Assert(false);
-
             var input = new Args(args);
 
             // -listen -timeout:60000 -cscs_path:./cscs.exe
-            // if (Environment.OSVersion.Platform.ToString().StartsWith("Win"))
-            // {
-            //     if (!input.dr) // not already deployed
-            //         DeployRoslyn();
-            // }
-            // else
-            // {
-            //     LoadRoslyn();
-            // }
 
-            mono_root = Path.GetDirectoryName(typeof(string).Assembly.Location);
-            Output.WriteLine(mono_root);
+            asm_root_dir = Path.GetDirectoryName(typeof(string).Assembly.Location); // SDK deployment
+            Output.WriteLine(asm_root_dir);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             Run(input);
         }
 
-        static string mono_root;
+        static string asm_root_dir;
 
         static string local_dir;
 
@@ -123,8 +66,8 @@ namespace Syntaxer
 
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return Probe(mono_root, args.Name) ??
-                   Probe(mono_root.PathJoin("Fasades"), args.Name) ??
+            return Probe(asm_root_dir, args.Name) ??
+                   Probe(asm_root_dir.PathJoin("Fasades"), args.Name) ??
                    Probe(Local_dir, args.Name) ??
                    ProbeAlreadyLoaded(args.ShortName());
         }
@@ -146,6 +89,10 @@ namespace Syntaxer
                 else if (File.Exists(csscript.default_cscs_path2))
                 {
                     csscript.cscs_path = csscript.default_cscs_path2;
+                }
+                else if (File.Exists(csscript.default_cscs_path3))
+                {
+                    csscript.cscs_path = csscript.default_cscs_path3;
                 }
                 else
                     Console.WriteLine("Probing cscs.exe failed...");

@@ -12,20 +12,20 @@ namespace Syntaxer
         public static void All()
         {
             var trigegr_loadig_var = csscript.Cscs_asm;
-            // Test.SuggestUsings(); return;
-            // Test.SignatureHelp(); return;
+            // Test.SuggestUsings();
+            // Test.SignatureHelp();
             // Test.Resolving();
-            Test.AssignmentCompletion(); return;
-            // Test.Renaming();
-            // Test.CodeMapVSCode();
-            // Test.Format();
+            Test.AssignmentCompletion(); ;
+            Test.Renaming();
+            Test.CodeMapVSCode();
+            Test.Format();
             // Test.Project();
             // Test.Tooltip();
 
-            // Test.CSSCompletion();
-            // Test.CSSResolving();
-            // Test.CSSResolving2();
-            // Test.CSSTooltipResolving();
+            Test.CSSCompletion();
+            Test.CSSResolving();
+            Test.CSSResolving2();
+            Test.CSSTooltipResolving();
         }
 
         public static void Format()
@@ -157,8 +157,7 @@ static class Extensions
                 caret = caret - 4 - 3;
                 string word = code.WordAt(caret);
 
-                var completions = TestServices.GetCompletion(@"E:\PrivateData\Galos\Projects\cs-script.core\src\cscs\bin\Debug\netcoreapp3.1\script.cs", 385);
-                // var completions = TestServices.GetCompletion(script, caret);
+                var completions = TestServices.GetCompletion(script, caret);
 
                 Output.WriteLine("OK - " + completions.Count() + " completion item(s)...");
                 Output.WriteLine("    '" + completions.GetLines().FirstOrDefault(x => x.StartsWith(word)) + "'");

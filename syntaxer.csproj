@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>syntaxer</RootNamespace>
+    <AssemblyName>syntaxer</AssemblyName>
+    <AssemblyVersion>3.0.1.0</AssemblyVersion>
+    <FileVersion>3.0.1.0</FileVersion>
+    <Version>3.0.1</Version>
+    <PackageReleaseNotes>- Added auto-discovery of installed CS-Script
+- Added support for probing directories: DesktopApp and WebApp</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="syntaxer.cli\**" />
+    <Compile Remove="syntaxer.core.cli\**" />
+    <Compile Remove="syntaxer.core.tests\**" />
+    <Compile Remove="syntaxer.tests\**" />
+    <EmbeddedResource Remove="syntaxer.cli\**" />
+    <EmbeddedResource Remove="syntaxer.core.cli\**" />
+    <EmbeddedResource Remove="syntaxer.core.tests\**" />
+    <EmbeddedResource Remove="syntaxer.tests\**" />
+    <None Remove="syntaxer.cli\**" />
+    <None Remove="syntaxer.core.cli\**" />
+    <None Remove="syntaxer.core.tests\**" />
+    <None Remove="syntaxer.tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Program.test.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Program.test.cs" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.9.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.9.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="3.9.0-3.final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.9.0-3.final" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="5.0.0" />
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="md &quot;$(ProjectDir)out&quot;&#xD;&#xA;md &quot;$(ProjectDir)out\runtimes&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.dll&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.exe&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;copy &quot;$(TargetDir)*.json&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)runtimes&quot;  &quot;$(ProjectDir)out\runtimes&quot; /s /i /y" />
+  </Target>
+
+</Project>

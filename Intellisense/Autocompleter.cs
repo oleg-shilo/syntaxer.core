@@ -987,6 +987,7 @@ namespace RoslynIntellisense
             var root = tree.GetRoot();
 
             var nodes = root.DescendantNodes();
+            var ttt = nodes.Where(x => x.Kind() == SyntaxKind.ArgumentList).ToArray();
 
             var invocationAtCursor = nodes.Where(x => x.Kind() == SyntaxKind.ArgumentList && x.FullSpan.End >= position)
                                          .Select(x => new
