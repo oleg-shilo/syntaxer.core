@@ -1,4 +1,5 @@
 $packageName = 'CS-Syntaxer'
 
-# no actions at this stage but any future 
-## cleanup steps should go here
+# cleanup steps should go here
+
+Uninstall-ChocolateyEnvironmentVariable -VariableName 'CSSYNTAXER_ROOT'

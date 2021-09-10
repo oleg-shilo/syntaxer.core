@@ -11,7 +11,7 @@
         <packageSourceUrl>https://github.com/oleg-shilo/syntaxer.core</packageSourceUrl>
         <bugTrackerUrl>https://github.com/oleg-shilo/syntaxer.core/issues</bugTrackerUrl>
         <docsUrl>https://github.com/oleg-shilo/syntaxer.core/wiki</docsUrl>
-        <iconUrl>https://raw.githubusercontent.com/oleg-shilo/cs-script/master/src/wiki/css_logo_codeplex_256x256.png
+        <iconUrl>https://cdn.statically.io/img/raw.githubusercontent.com/oleg-shilo/cs-script/master/src/wiki/css_logo_codeplex_256x256.png
         </iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text) </description>
