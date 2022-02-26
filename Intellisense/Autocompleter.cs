@@ -197,7 +197,7 @@ namespace RoslynIntellisense
                 if (globals_usings.HasText())
                 {
                     code = globals_usings.AppendLine(code);
-                    position += globals_usings.Length;
+                    position += globals_usings.Length + Environment.NewLine.Length;
                     injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
                 }
 
@@ -301,7 +301,7 @@ namespace RoslynIntellisense
                 if (globals_usings.HasText())
                 {
                     code = globals_usings.AppendLine(code);
-                    position += globals_usings.Length;
+                    position += globals_usings.Length + Environment.NewLine.Length;
                     injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
                 }
 
@@ -340,7 +340,7 @@ namespace RoslynIntellisense
                 if (globals_usings.HasText())
                 {
                     code = globals_usings.AppendLine(code);
-                    position += globals_usings.Length;
+                    position += globals_usings.Length + Environment.NewLine.Length;
                     injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
                 }
 
@@ -469,7 +469,7 @@ namespace RoslynIntellisense
                 if (globals_usings.HasText())
                 {
                     code = globals_usings.AppendLine(code);
-                    actualPosition += globals_usings.Length;
+                    actualPosition += globals_usings.Length + Environment.NewLine.Length;
                 }
 
                 var doc = InitWorkspace(workspace, code, null, AgregateRefs(references), includes);
@@ -582,7 +582,7 @@ namespace RoslynIntellisense
             if (globals_usings.HasText())
             {
                 code = globals_usings.AppendLine(code);
-                logicalPosition += globals_usings.Length;
+                logicalPosition += globals_usings.Length + Environment.NewLine.Length;
             }
 
             if (opContext == "=" || opContext == "= new")

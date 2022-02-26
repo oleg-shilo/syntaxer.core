@@ -3,7 +3,7 @@
     "syntaxer.core": {
       "commandName": "Project",
       "commandLineArgs0": "-test",
-      "commandLineArgs": "-listen -port:18001 -timeout:60000 -33333cscs_path:D:\\dev\\Galos\\cs-script\\src\\cscs\\bin\\Debug\\net5.0\\cscs.dll"
+      "commandLineArgs": "-listen -port:18001 -timeout:60000 -3333cscs_path:D:\\dev\\Galos\\cs-script\\src\\cscs\\bin\\Debug\\net5.0\\cscs.dll"
     }
   }
 }
