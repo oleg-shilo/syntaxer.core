@@ -5,8 +5,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>syntaxer</RootNamespace>
     <AssemblyName>syntaxer</AssemblyName>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <FileVersion>3.0.1.0</FileVersion>
+    <AssemblyVersion>3.1.0.0</AssemblyVersion>
+    <FileVersion>3.1.0.0</FileVersion>
     <Version>3.0.1.0</Version>
     <PackageReleaseNotes>- Added auto-discovery of installed CS-Script
 - Added support for probing directories: DesktopApp and WebApp</PackageReleaseNotes>

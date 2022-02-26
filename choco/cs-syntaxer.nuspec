@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>cs-syntaxer</id>
-        <version>3.0.1.0</version>
+        <version>3.1.0.0</version>
         <title>CS-Syntaxer</title>
         <authors>Oleg Shilo</authors>
         <owners>Oleg Shilo</owners>
@@ -17,14 +17,14 @@
         <description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text) </description>
         <summary>CS-Syntaxer</summary>
         <releaseNotes>
-# Release v3.0.1.0
-- Added auto-discovery of installed CS-Script
-- Added support for probing directories: DesktopApp and WebApp
+# Release v3.1.0.0
+- Ported to .NET6
+- Added support for .NET6 global usings
         </releaseNotes>
         <copyright>Oleg Shilo</copyright>
         <tags>cs-script C# syntax IDE</tags>
         <dependencies>
-            <dependency id="cs-script" version="4.1.0.0" />
+            <dependency id="cs-script" version="4.4.0.0" />
         </dependencies>
     </metadata>
     <files>
