@@ -192,6 +192,15 @@ namespace RoslynIntellisense
             //SymbolFinder.FindReferencesAsync
             try
             {
+                var globals_usings = includes.ExtractGlobalsUsings();
+                var injectedLinesInPrimaryFile = 0;
+                if (globals_usings.HasText())
+                {
+                    code = globals_usings.AppendLine(code);
+                    position += globals_usings.Length;
+                    injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
+                }
+
                 var workspace = new AdhocWorkspace();
                 var doc = InitWorkspace(workspace, code, file, AgregateRefs(references), includes);
 
@@ -214,6 +223,9 @@ namespace RoslynIntellisense
                                               var line = start.Line + 1;
                                               var column = start.Character + 1;
                                               var filePath = x.SourceTree.FilePath;
+
+                                              if (filePath == file)
+                                                  line -= injectedLinesInPrimaryFile;
 
                                               var fileContent = x.SourceTree.GetText().ToString();
 
@@ -283,6 +295,16 @@ namespace RoslynIntellisense
             try
             {
                 var workspace = new AdhocWorkspace();
+                var globals_usings = includes.ExtractGlobalsUsings();
+                var injectedLinesInPrimaryFile = 0;
+
+                if (globals_usings.HasText())
+                {
+                    code = globals_usings.AppendLine(code);
+                    position += globals_usings.Length;
+                    injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
+                }
+
                 var doc = InitWorkspace(workspace, code, file, AgregateRefs(references), includes);
 
                 var symbol = SymbolFinder.FindSymbolAtPositionAsync(doc, position).Result;
@@ -294,12 +316,15 @@ namespace RoslynIntellisense
                     result.AddRange(namedType.Constructors
                                              .SelectMany(c => c.Locations)
                                              .Where(x => x.IsInSource)
-                                             .Select(x => x.ToDomRegion()));
+                                             .Select(x => x.ToDomRegion(
+                                                              (x.SourceTree.FilePath == file) ? injectedLinesInPrimaryFile : 0)));
                 }
 
                 result.AddRange(symbol.Locations
                                       .Where(x => x.IsInSource)
-                                      .Select(x => x.ToDomRegion()));
+                                      .Select(x => x.ToDomRegion(
+                                                       (x.SourceTree.FilePath == file) ?
+                                                       injectedLinesInPrimaryFile : 0)));
             }
             catch { }
             return result.ToArray();
@@ -309,6 +334,16 @@ namespace RoslynIntellisense
         {
             try
             {
+                var globals_usings = includes.ExtractGlobalsUsings();
+                var injectedLinesInPrimaryFile = 0;
+
+                if (globals_usings.HasText())
+                {
+                    code = globals_usings.AppendLine(code);
+                    position += globals_usings.Length;
+                    injectedLinesInPrimaryFile = globals_usings.GetLines().Count();
+                }
+
                 var workspace = new AdhocWorkspace();
                 var doc = InitWorkspace(workspace, code, file, AgregateRefs(references), includes);
 
@@ -330,7 +365,12 @@ namespace RoslynIntellisense
                             return ResolveType(symbol.GetFullName(), references, includes);
                     }
 
-                    return location.ToDomRegion();
+                    DomRegion result = location.ToDomRegion();
+                    if (file == result.FileName)
+                        result = location.ToDomRegion(injectedLinesInPrimaryFile);
+                    else
+                        result = location.ToDomRegion();
+                    return result;
                 }
                 else if (location.IsInMetadata)
                 {
@@ -424,6 +464,14 @@ namespace RoslynIntellisense
 
                 var workspace = new AdhocWorkspace();
 
+                var globals_usings = includes.ExtractGlobalsUsings();
+
+                if (globals_usings.HasText())
+                {
+                    code = globals_usings.AppendLine(code);
+                    actualPosition += globals_usings.Length;
+                }
+
                 var doc = InitWorkspace(workspace, code, null, AgregateRefs(references), includes);
 
                 var symbol = SymbolFinder.FindSymbolAtPositionAsync(doc, actualPosition).Result;
@@ -468,6 +516,10 @@ namespace RoslynIntellisense
                 var result = new List<string>();
 
                 var workspace = new AdhocWorkspace();
+                var globals_usings = includes.ExtractGlobalsUsings();
+
+                if (globals_usings.HasText())
+                    code = globals_usings.AppendLine(code);
 
                 var doc = InitWorkspace(workspace, code, null, AgregateRefs(references), includes);
 
@@ -514,21 +566,31 @@ namespace RoslynIntellisense
 
         //position is zero-based
         //public async static Task<IEnumerable<ICompletionData>> GetAutocompletionFor(string code, int position, string[] references = null, IEnumerable<Tuple<string, string>> includes = null)
-        public static IEnumerable<ICompletionData> GetAutocompletionFor(string code, int position, string[] references = null, IEnumerable<Tuple<string, string>> includes = null, bool includDocumentation = false)
+        public static IEnumerable<ICompletionData> GetAutocompletionFor(string rawCode, int position, string[] references = null, IEnumerable<Tuple<string, string>> includes = null, bool includDocumentation = false)
         {
             // Debug.Assert(false);
             string opContext;
 
             string partialWord;
             int logicalPosition;
+            string code = rawCode;
 
             GetWordFromCaret(code, position, out logicalPosition, out partialWord, out opContext);
+
+            var globals_usings = includes.ExtractGlobalsUsings();
+
+            if (globals_usings.HasText())
+            {
+                code = globals_usings.AppendLine(code);
+                logicalPosition += globals_usings.Length;
+            }
 
             if (opContext == "=" || opContext == "= new")
             {
                 try
                 {
                     var workspace = new AdhocWorkspace();
+
                     var doc = InitWorkspace(workspace, code, null, AgregateRefs(references), includes);
 
                     ISymbol symbol = SymbolFinder.FindSymbolAtPositionAsync(doc, logicalPosition).Result;
@@ -849,6 +911,12 @@ namespace RoslynIntellisense
             var suggestions = new List<Intellisense.Common.TypeInfo>();
 
             var workspace = new AdhocWorkspace();
+            var globals_usings = includes.ExtractGlobalsUsings();
+
+            if (globals_usings.HasText())
+            {
+                editorText = globals_usings.AppendLine(editorText);
+            }
 
             var doc = InitWorkspace(workspace, editorText, null, AgregateRefs(references), includes);
 

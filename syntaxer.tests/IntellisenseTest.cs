@@ -64,6 +64,21 @@ namespace syntaxer.core.tests
         });
 
         [Fact]
+        public static void Comlpetion_in_Nuget_packages() => WithDisposable(scriptFile =>
+        {
+            (var caret, _) = @"
+//css_nuget NLog;
+using System;
+
+var t = typeof(NLog.Config.Ad|);"
+                            .ToTestData(scriptFile);
+
+            var completions = TestServices.GetCompletion(scriptFile, caret);
+
+            Assert.NotNull(completions.Split(NewLine).FirstOrDefault(x => x.StartsWith("message")));
+        });
+
+        [Fact]
         public static void TopLevelClassSystemComlpetion() => WithDisposable(script =>
         {
             (var caret, var code) = @"using System;

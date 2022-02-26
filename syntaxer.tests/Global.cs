@@ -28,7 +28,8 @@ static class Global
                 csscript.cscs_path = cscs;
             else
             {
-                cscs = @"E:\Galos\Projects\cs-script.core\src\cscs\bin\Debug\net5.0\cscs.dll";
+                cscs = @"C:\ProgramData\chocolatey\lib\cs-script\tools\cscs.dll";
+                cscs = @"C:\Users\oleg.shilo\AppData\Roaming\Code\User\cs-script.user\dotnet\cscs.dll";
                 // cscs = Environment.GetEnvironmentVariable("CSSCRIPT_DIR")?.PathJoin("cscs.dll");
                 if (File.Exists(cscs))
                     csscript.cscs_path = cscs;

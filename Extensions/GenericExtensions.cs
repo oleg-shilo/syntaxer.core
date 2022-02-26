@@ -45,10 +45,20 @@ namespace RoslynIntellisense
             return SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(input)).ToFullString();
         }
 
+        public static string AppendLine(this string a, string b)
+            => a + Environment.NewLine + b;
+
         public static bool IsVbFile(this string file)
         {
             return file.EndsWith(".vb", StringComparison.InvariantCultureIgnoreCase);
         }
+
+        static internal string ExtractGlobalsUsings(this IEnumerable<Tuple<string, string>> includes)
+            => includes?.Where(x => x.Item2.EndsWith("global-usings.cs", StringComparison.OrdinalIgnoreCase))
+                               .SelectMany(x => x.Item1.GetLines()
+                                                       .Where(x => x.TrimStart().StartsWith("global using "))
+                                                       .Select(x => x.Trim()))
+                               .JoinBy(Environment.NewLine);
 
         public static int LineNumberOf(this string text, int pos)
         {

@@ -12,6 +12,7 @@ namespace Syntaxer
         public static void All()
         {
             var trigegr_loadig_var = csscript.Cscs_asm;
+            Test.DryRun(); return;
             // Test.SuggestUsings();
             // Test.SignatureHelp();
             // Test.Resolving();
@@ -162,6 +163,35 @@ static class Extensions
                 Output.WriteLine("OK - " + completions.Count() + " completion item(s)...");
                 Output.WriteLine("    '" + completions.GetLines().FirstOrDefault(x => x.StartsWith(word)) + "'");
             });
+        }
+
+        public static void DryRun()
+        {
+            var code = @"//css_inc global-usings
+    //using System.IO;
+    using System;
+    using System.Diagnostics;
+
+    //global using global::System.IO;
+
+    File.
+
+    print(""sdsaasdsad"".);";
+
+            TestScript(script =>
+                {
+                    Console.Write("CS-Script DryRun: ");
+
+                    File.WriteAllText(script, code);
+
+                    var pattern = "File.";
+                    var caret = code.IndexOf(pattern) + pattern.Length;
+                    var completions = SyntaxProvider.GetCompletion(script, caret);
+
+                    Output.WriteLine("OK");
+
+                    // Console.WriteLine("    '" + completions.Split('\n').FirstOrDefault(x => x.StartsWith(word)) + "'");
+                }, local: true);
         }
 
         public static void CSSCompletion()

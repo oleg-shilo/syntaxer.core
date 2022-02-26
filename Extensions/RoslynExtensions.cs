@@ -1,13 +1,13 @@
-using Intellisense.Common;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Intellisense.Common;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace RoslynIntellisense
@@ -88,7 +88,7 @@ namespace RoslynIntellisense
             return symbol.Reconstruct(out pos, includeDoc);
         }
 
-        public static DomRegion ToDomRegion(this Microsoft.CodeAnalysis.Location location)
+        public static DomRegion ToDomRegion(this Microsoft.CodeAnalysis.Location location, int injectedHeaderLines = 0)
         {
             //DomRegion is 1-based Editor friendly struct
 
@@ -97,8 +97,8 @@ namespace RoslynIntellisense
             return new DomRegion
             {
                 FileName = location.SourceTree.FilePath,
-                BeginLine = linePosition.Line + 1,
-                EndLine = linePosition.Line + 1,
+                BeginLine = linePosition.Line + 1 - injectedHeaderLines,
+                EndLine = linePosition.Line + 1 - injectedHeaderLines,
                 BeginColumn = linePosition.Character + 1,
             };
         }
@@ -877,23 +877,23 @@ namespace RoslynIntellisense
             text.Length > 0 &&
             (text.StartsWith("(float)")
             ||
-             text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
-             text.HasFloatSuffix());
+            text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
+            text.HasFloatSuffix());
 
         public static bool IsDecimal(this string text) =>
             text.Length > 0 &&
             (text.StartsWith("(decimal)")
             ||
-             text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
-             text.HasDecimalSuffix());
+            text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
+            text.HasDecimalSuffix());
 
         public static bool IsDouble(this string text) =>
             text.Length > 0 &&
             (text.StartsWith("(double)")
             ||
-             text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
-             ((text.Contains(".") && text.EndsWithDigit()) ||
-               text.HasDoubleSuffix()));
+            text.Substring(0, text.Length - 1).Replace(".", "").IsNumeric() &&
+            ((text.Contains(".") && text.EndsWithDigit()) ||
+                text.HasDoubleSuffix()));
 
         public static bool IsByte(this string text) =>
             text.Length > 0 &&
@@ -906,24 +906,24 @@ namespace RoslynIntellisense
         //((text.StartsWith("'") && text.EndsWith("'")) || text.StartsWith("(char)"));
 
         public static bool IsLong(this string text) =>
-           text.Length > 0 &&
-           text.IsNumeric() &&
-           (text.StartsWith("(long)") || text.EndsWith("l", StringComparison.OrdinalIgnoreCase));
+            text.Length > 0 &&
+            text.IsNumeric() &&
+            (text.StartsWith("(long)") || text.EndsWith("l", StringComparison.OrdinalIgnoreCase));
 
         public static bool IsSbyte(this string text) =>
-           text.Length > 0 &&
-           text.IsNumeric() &&
-           text.StartsWith("(sbyte)");
+            text.Length > 0 &&
+            text.IsNumeric() &&
+            text.StartsWith("(sbyte)");
 
         public static bool IsShort(this string text) =>
-           text.Length > 0 &&
-           text.IsNumeric() &&
-           text.StartsWith("(short)");
+            text.Length > 0 &&
+            text.IsNumeric() &&
+            text.StartsWith("(short)");
 
         public static bool IsUlong(this string text) =>
-          text.Length > 0 &&
-          text.IsNumeric() &&
-          text.StartsWith("(ulong)");
+            text.Length > 0 &&
+            text.IsNumeric() &&
+            text.StartsWith("(ulong)");
 
         public static bool IsInt(this string text) =>
             text.Length > 0 &&
