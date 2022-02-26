@@ -75,7 +75,17 @@ namespace Syntaxer
                         {
                             _cscs_asm = null;
                             Log(e.ToString());
-                            throw new Exception($"Cannot load cscs.exe assembly from {cscs_path}");
+
+                            var error = $"Cannot load cscs.exe assembly from {cscs_path}";
+
+                            if (e is TargetInvocationException &&
+                                e.InnerException is TypeLoadException &&
+                                e.InnerException.Message.Contains("System.Runtime, Version="))
+                            {
+                                error = error.AppendLine("Ensure that the CS-Script engine and the Syntaxer are targeting the same runtime");
+                            }
+
+                            throw new Exception(error);
                         }
                     }
                     return _cscs_asm;
