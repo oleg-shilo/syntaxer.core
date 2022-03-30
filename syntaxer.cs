@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Intellisense.Common;
 using RoslynIntellisense;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("syntaxer.tests")]
 
@@ -84,8 +84,11 @@ namespace Syntaxer
         {
             if (input.cscs_path != null)
             {
+                // Console.WriteLine($"Input {input.cscs_path} ...");
+                // Console.WriteLine($"Probing 0 {csscript.cscs_path} ...");
                 csscript.cscs_path = Path.GetFullPath(input.cscs_path);
             }
+            Console.WriteLine($"Probing {csscript.cscs_path} ...");
 
             if (csscript.cscs_path == null || !File.Exists(csscript.cscs_path))
             {

@@ -12,21 +12,16 @@ namespace Syntaxer
         public static void All()
         {
             var trigegr_loadig_var = csscript.Cscs_asm;
-            Test.DryRun(); return;
-            // Test.SuggestUsings();
-            // Test.SignatureHelp();
-            // Test.Resolving();
-            Test.AssignmentCompletion(); ;
-            Test.Renaming();
-            Test.CodeMapVSCode();
-            Test.Format();
-            // Test.Project();
-            // Test.Tooltip();
+            //Test.DryRun(); return;
+            // Test.AssignmentCompletion(); ;
+            // Test.Renaming();
+            // Test.CodeMapVSCode();
+            // Test.Format();
 
+            //Test.CSSResolving();
             Test.CSSCompletion();
-            Test.CSSResolving();
-            Test.CSSResolving2();
-            Test.CSSTooltipResolving();
+            //Test.CSSResolving2();
+            // Test.CSSTooltipResolving();
         }
 
         public static void Format()
@@ -111,16 +106,18 @@ static class Extensions
             try
             {
                 var currDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var cscs = Path.Combine(currDir, "cscs.exe");
+                var cscs = Path.Combine(currDir, "cscs.dll");
                 if (File.Exists(cscs))
-                    csscript.cscs_path = cscs;
-                else
                 {
-                    cscs = Path.Combine(Path.GetDirectoryName(currDir), "cscs.exe");
+                    csscript.cscs_path = cscs;
+                }
+                else if (!csscript.cscs_path.IsEmpty() && !File.Exists(csscript.cscs_path))
+                {
+                    cscs = Path.Combine(Path.GetDirectoryName(currDir), "cscs.dll");
                     if (File.Exists(cscs))
                         csscript.cscs_path = cscs;
                     else
-                        csscript.cscs_path = "./cscs.exe";
+                        csscript.cscs_path = "./cscs.dll";
                 }
 
                 action(script);

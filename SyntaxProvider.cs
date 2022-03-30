@@ -516,7 +516,7 @@ namespace Syntaxer
                         }
                         else
                         {
-                            display += "(..)";
+                            display += "(...)";
                             //completion += "(";
                         }
                     }

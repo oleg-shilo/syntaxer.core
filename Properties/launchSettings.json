@@ -2,8 +2,8 @@
   "profiles": {
     "syntaxer.core": {
       "commandName": "Project",
-      "commandLineArgs0": "-test",
-      "commandLineArgs": "-listen -port:18001 -timeout:60000 -3333cscs_path:D:\\dev\\Galos\\cs-script\\src\\cscs\\bin\\Debug\\net5.0\\cscs.dll"
+      "commandLineArgs0": "-listen -port:18001 -timeout:60000 -cscs_path:D:\\dev\\Galos\\cs-script\\src\\cscs\\bin\\Debug\\net5.0\\cscs.dll",
+      "commandLineArgs": "-test -css_path:D:\\dev\\Galos\\cs-script\\src\\cscs\\bin\\Debug\\net6.0\\cscs.dll"
     }
   }
 }

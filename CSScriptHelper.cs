@@ -112,8 +112,8 @@ namespace Syntaxer
                         _cscs_path = Path.GetFullPath(_cscs_path);
 
                     Console.WriteLine("cscs_path set to: " + _cscs_path);
-                    // Console.WriteLine("Setting cscs.exe ...");
-                    //CSScriptProxy.TriggerCompilerLoading();
+
+                    Environment.SetEnvironmentVariable("CSS_ENTRY_ASM", _cscs_path);
                 }
             }
         }
@@ -173,8 +173,10 @@ namespace Syntaxer
                         Script = (string)projType.GetField("Script").GetValue(proj)
                     };
                 }
-                catch { }
-                return null;
+                catch (TargetInvocationException e)
+                {
+                    throw new Exception("Cannot generate project: " + e.InnerException.Message);
+                }
             }
         }
 
