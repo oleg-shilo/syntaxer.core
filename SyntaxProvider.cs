@@ -62,42 +62,45 @@ namespace Syntaxer
                     }
                 }
 
-                if (!File.Exists(args.script))
-                    if (args.script.HasText())
-                        return $"<error>File '{args.script}' doesn't exist";
-                    else
-                        return null;
-
                 string result = "";
-
-                if (args.op == "references")
-                    result = FindRefreneces(args.script, args.pos, args.context);
-                else if (args.op.StartsWith("suggest_usings:"))
-                    result = FindUsings(args.script, args.op.Split(':').Last(), args.rich);
-                else if (args.op == "resolve")
-                    result = Resolve(args.script, args.pos, args.rich);
-                else if (args.op == "completion")
-                    result = GetCompletion(args.script, args.pos, args.doc);
-                else if (args.op.StartsWith("tooltip:"))
-                    result = GetTooltip(args.script, args.pos, args.op.Split(':').Last(), args.short_hinted_tooltips == 1);
-                else if (args.op.StartsWith("memberinfo"))
-                    result = GetMemberInfo(args.script, args.pos, args.collapseOverloads);
-                else if (args.op.StartsWith("signaturehelp"))
-                    result = GetSignatureHelp(args.script, args.pos);
-                else if (args.op == "project")
-                    result = GenerateProjectFor(args.script);
-                else if (args.op == "codemap")
-                    result = CodeMap(args.script, args.rich, false);
-                else if (args.op == "codemap_vscode")
-                    result = CodeMap(args.script, args.rich, vsCodeSerialization: true);
-                else if (args.op == "format")
+                if (args.op.HasText())
                 {
-                    Output.WriteLine("FormatCode>");
-                    int caretPos = args.pos;
-                    var formattedCode = FormatCode(args.script, ref caretPos);
-                    Output.WriteLine("<FormatCode");
-                    result = $"{caretPos}\n{formattedCode}";
+                    if (!File.Exists(args.script))
+                        if (args.script.HasText())
+                            return $"<error>File '{args.script}' doesn't exist";
+                        else
+                            return null;
+
+                    if (args.op == "references")
+                        result = FindRefreneces(args.script, args.pos, args.context);
+                    else if (args.op.StartsWith("suggest_usings:"))
+                        result = FindUsings(args.script, args.op.Split(':').Last(), args.rich);
+                    else if (args.op == "resolve")
+                        result = Resolve(args.script, args.pos, args.rich);
+                    else if (args.op == "completion")
+                        result = GetCompletion(args.script, args.pos, args.doc);
+                    else if (args.op.StartsWith("tooltip:"))
+                        result = GetTooltip(args.script, args.pos, args.op.Split(':').Last(), args.short_hinted_tooltips == 1);
+                    else if (args.op.StartsWith("memberinfo"))
+                        result = GetMemberInfo(args.script, args.pos, args.collapseOverloads);
+                    else if (args.op.StartsWith("signaturehelp"))
+                        result = GetSignatureHelp(args.script, args.pos);
+                    else if (args.op == "project")
+                        result = GenerateProjectFor(args.script);
+                    else if (args.op == "codemap")
+                        result = CodeMap(args.script, args.rich, false);
+                    else if (args.op == "codemap_vscode")
+                        result = CodeMap(args.script, args.rich, vsCodeSerialization: true);
+                    else if (args.op == "format")
+                    {
+                        Output.WriteLine("FormatCode>");
+                        int caretPos = args.pos;
+                        var formattedCode = FormatCode(args.script, ref caretPos);
+                        Output.WriteLine("<FormatCode");
+                        result = $"{caretPos}\n{formattedCode}";
+                    }
                 }
+
                 if (string.IsNullOrEmpty(result))
                     return "<null>";
                 else

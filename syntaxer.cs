@@ -44,7 +44,9 @@ namespace Syntaxer
             {
                 Console.WriteLine("CS-Syntaxer v" + Assembly.GetExecutingAssembly().GetName().Version);
                 Console.WriteLine("Syntax provider for C# scripts (cs-script).");
-                Console.WriteLine("Copyright (C) 2021 Oleg Shilo (github.com/oleg-shilo/syntaxer.core)");
+                Console.WriteLine("Copyright (C) 2022 Oleg Shilo (github.com/oleg-shilo/syntaxer.core)");
+                Console.WriteLine("Path: " + Assembly.GetExecutingAssembly().Location);
+
                 return;
             }
 
