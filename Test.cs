@@ -11,7 +11,7 @@ namespace Syntaxer
     {
         public static void All()
         {
-            var trigegr_loadig_var = csscript.Cscs_asm;
+            var trigegr_loadig_var = CSScriptProxy.Cscs_asm;
             //Test.DryRun(); return;
             // Test.AssignmentCompletion(); ;
             // Test.Renaming();
@@ -109,15 +109,15 @@ static class Extensions
                 var cscs = Path.Combine(currDir, "cscs.dll");
                 if (File.Exists(cscs))
                 {
-                    csscript.cscs_path = cscs;
+                    CSScriptProxy.cscs_path = cscs;
                 }
-                else if (!csscript.cscs_path.IsEmpty() && !File.Exists(csscript.cscs_path))
+                else if (!CSScriptProxy.cscs_path.IsEmpty() && !File.Exists(CSScriptProxy.cscs_path))
                 {
                     cscs = Path.Combine(Path.GetDirectoryName(currDir), "cscs.dll");
                     if (File.Exists(cscs))
-                        csscript.cscs_path = cscs;
+                        CSScriptProxy.cscs_path = cscs;
                     else
-                        csscript.cscs_path = "./cscs.dll";
+                        CSScriptProxy.cscs_path = "./cscs.dll";
                 }
 
                 action(script);

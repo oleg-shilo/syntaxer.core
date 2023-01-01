@@ -1,8 +1,8 @@
+using Intellisense.Common;
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.IO;
-using Intellisense.Common;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Syntaxer
@@ -11,7 +11,7 @@ namespace Syntaxer
     {
         static string GetHelpFile()
         {
-            string file = Path.Combine(Path.GetTempPath(), "Sublime.CS-Script", "ReflctedTypes", "cs-script." + csscript.Cscs_asm.GetName().Version + ".help.txt");
+            string file = Path.Combine(Path.GetTempPath(), "Sublime.CS-Script", "ReflctedTypes", "cs-script." + CSScriptProxy.Cscs_asm.GetName().Version + ".help.txt");
 
             if (!File.Exists(file))
             {
@@ -19,7 +19,7 @@ namespace Syntaxer
                     .EnsureDir()
                     .DeleteDirFiles("cs-script.*.help.txt");
 
-                try { File.WriteAllText(file, Utils.Run(csscript.cscs_path, "-?")); }
+                try { File.WriteAllText(file, Utils.Run(CSScriptProxy.cscs_path, "-?")); }
                 catch { }
             }
             return file;

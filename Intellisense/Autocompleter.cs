@@ -1,3 +1,10 @@
+using Intellisense.Common;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.CodeAnalysis.Recommendations;
+using Microsoft.CodeAnalysis.Text;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,13 +14,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Recommendations;
-using Microsoft.CodeAnalysis.Text;
-using Intellisense.Common;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace RoslynIntellisense
@@ -761,7 +761,7 @@ namespace RoslynIntellisense
 
                 var nodes = root.DescendantNodes();
 
-                var methodAtCursor = nodes.Where(x => x.Kind() == SyntaxKind.MethodDeclaration &&
+                var methodAtCursor = nodes.Where(x => x.IsKind(SyntaxKind.MethodDeclaration) &&
                                                       x.FullSpan.End >= position)
                                           .OfType<MethodDeclarationSyntax>()
                                           .Select(x => new
@@ -853,7 +853,7 @@ namespace RoslynIntellisense
 
             var document = InitWorkspace(workspace, code, null, AgregateRefs(references), includes);
             var model = document.GetSemanticModelAsync().Result;
-            var symbols = Recommender.GetRecommendedSymbolsAtPositionAsync(model, position, workspace).Result.ToArray();
+            var symbols = Recommender.GetRecommendedSymbolsAtPositionAsync(document, position).Result.ToArray();
 
             var data = symbols.Select(s => s.ToCompletionData());
 
@@ -1055,9 +1055,9 @@ namespace RoslynIntellisense
             var root = tree.GetRoot();
 
             var nodes = root.DescendantNodes();
-            var ttt = nodes.Where(x => x.Kind() == SyntaxKind.ArgumentList).ToArray();
+            var ttt = nodes.Where(x => x.IsKind(SyntaxKind.ArgumentList)).ToArray();
 
-            var invocationAtCursor = nodes.Where(x => x.Kind() == SyntaxKind.ArgumentList && x.FullSpan.End >= position)
+            var invocationAtCursor = nodes.Where(x => x.IsKind(SyntaxKind.ArgumentList) && x.FullSpan.End >= position)
                                          .Select(x => new
                                          {
                                              Distance = x.FullSpan.End - position,

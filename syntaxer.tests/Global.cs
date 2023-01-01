@@ -25,16 +25,16 @@ static class Global
             var currDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var cscs = Path.Combine(currDir, "cscs.exe");
             if (File.Exists(cscs))
-                csscript.cscs_path = cscs;
+                CSScriptProxy.cscs_path = cscs;
             else
             {
                 cscs = @"C:\ProgramData\chocolatey\lib\cs-script\tools\cscs.dll";
                 cscs = @"C:\Users\oleg.shilo\AppData\Roaming\Code\User\cs-script.user\dotnet\cscs.dll";
                 // cscs = Environment.GetEnvironmentVariable("CSSCRIPT_DIR")?.PathJoin("cscs.dll");
                 if (File.Exists(cscs))
-                    csscript.cscs_path = cscs;
+                    CSScriptProxy.cscs_path = cscs;
                 else
-                    csscript.cscs_path = "./cscs.exe";
+                    CSScriptProxy.cscs_path = "./cscs.exe";
             }
 
             action(script);

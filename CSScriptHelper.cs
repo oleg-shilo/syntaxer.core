@@ -1,3 +1,5 @@
+using Intellisense.Common;
+using RoslynIntellisense;
 using System;
 using System.IO;
 using System.Linq;
@@ -5,8 +7,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
-using Intellisense.Common;
-using RoslynIntellisense;
 
 namespace Syntaxer
 {
@@ -19,12 +19,12 @@ namespace Syntaxer
 
         public static Project GenerateProjectFor(string script)
         {
-            return csscript.ProjectBuilder.GenerateProjectFor(script);
+            return CSScriptProxy.ProjectBuilder.GenerateProjectFor(script);
         }
     }
 
     //need to use reflection so cscs.exe can be remapped dynamically
-    public static class csscript
+    public static class CSScriptProxy
     {
         internal static string default_cscs_path = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("cscs.dll");
         internal static string default_cscs_path2 = Assembly.GetExecutingAssembly().Location.GetDirName().PathJoin("..", "cscs.dll");
@@ -49,7 +49,7 @@ namespace Syntaxer
         {
             get
             {
-                lock (typeof(csscript))
+                lock (typeof(Syntaxer.CSScriptProxy))
                 {
                     // csscript.Log("Cscs_asm=" + (_cscs_asm == null ? "<null>" : "<asm>"));
                     // csscript.Log("cscs_path=" + cscs_path);
@@ -58,7 +58,7 @@ namespace Syntaxer
                         try
                         {
                             if (cscs_path.IsEmpty())
-                                csscript.Log($"Error: cscs_path is empty");
+                                Syntaxer.CSScriptProxy.Log($"Error: cscs_path is empty");
                             _cscs_asm = Assembly.Load(File.ReadAllBytes(cscs_path));
 
                             GenerateProjectFor_Method = _cscs_asm.GetLoadableTypes()
@@ -95,7 +95,9 @@ namespace Syntaxer
 
         static string _cscs_path;
 
+#pragma warning disable IDE1006 // Naming Styles
         static public string cscs_path
+#pragma warning restore IDE1006 // Naming Styles
         {
             get { return _cscs_path; }
 
@@ -104,7 +106,7 @@ namespace Syntaxer
                 if (value != null && value != _cscs_path)
                 {
                     if (value == "./cscs.exe" || !File.Exists(value))
-                        _cscs_path = csscript.default_cscs_path;
+                        _cscs_path = Syntaxer.CSScriptProxy.default_cscs_path;
                     else
                         _cscs_path = value;
 
@@ -130,20 +132,24 @@ namespace Syntaxer
                 //csscript.ProjectBuilder.GetCSSConfig();
                 try
                 {
-                    return Path.Combine(Path.GetDirectoryName(csscript._cscs_path), "css_config.xml");
+                    return Path.Combine(Path.GetDirectoryName(Syntaxer.CSScriptProxy._cscs_path), "css_config.xml");
                 }
                 catch { }
                 return null;
             }
 
+#pragma warning disable IDE1006 // Naming Styles
             static object cscs_GenerateProjectFor(string script)
+#pragma warning restore IDE1006 // Naming Styles
             {
                 return GenerateProjectFor_Method.Invoke(null, new object[] { script });
             }
 
+#pragma warning disable IDE1006 // Naming Styles
             internal static string cscs_GetScriptTempDir()
+#pragma warning restore IDE1006 // Naming Styles
             {
-                return (string)csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "CSExecutor").First()
+                return (string)CSScriptProxy.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "CSExecutor").First()
                                                 .GetMethod("GetScriptTempDir", BindingFlags.Public | BindingFlags.Static)
                                                 .Invoke(null, new object[0]);
             }
@@ -153,8 +159,8 @@ namespace Syntaxer
                 //csscript.ProjectBuilder.GenerateProjectFor(script);
                 try
                 {
-                    if (csscript.Cscs_asm == null)
-                        throw new Exception($"cscs.exe assembly is not loaded ({csscript.cscs_path}).");
+                    if (Syntaxer.CSScriptProxy.Cscs_asm == null)
+                        throw new Exception($"cscs.exe assembly is not loaded ({Syntaxer.CSScriptProxy.cscs_path}).");
 
                     var dbg_interface_file = Path.Combine(cscs_GetScriptTempDir(), "Cache", "dbg.cs");
 
@@ -180,7 +186,7 @@ namespace Syntaxer
             }
         }
 
-        class CSScriptProxy
+        class CSScriptProxyExperimental
         {
             static public void TriggerCompilerLoading()
             {
@@ -290,7 +296,7 @@ namespace Syntaxer
                 //csscript.AutoclassGenerator.Process(text, ref position);
                 try
                 {
-                    var type = csscript.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "AutoclassGenerator").FirstOrDefault();
+                    var type = CSScriptProxy.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "AutoclassGenerator").FirstOrDefault();
                     MethodInfo method = type.GetMethods(BindingFlags.Public | BindingFlags.Static).Single(m => m.Name == "Process" && m.GetParameters().Length == 2);
                     object[] args = new object[] { text, position };
                     var result = (string)method.Invoke(null, args);
@@ -367,19 +373,19 @@ namespace Syntaxer
 
         static public string GetCSSConfig()
         {
-            return csscript.ProjectBuilder.GetCSSConfig();
+            return CSScriptProxy.ProjectBuilder.GetCSSConfig();
         }
 
         static string help_file;
 
         static public string GetCSSHelp()
         {
-            var file = csscript.ProjectBuilder.cscs_GetScriptTempDir().PathJoin("help.txt");
+            var file = CSScriptProxy.ProjectBuilder.cscs_GetScriptTempDir().PathJoin("help.txt");
             if (help_file == null)
             {
                 try
                 {
-                    var output = Utils.Run(csscript.cscs_path, "-help");
+                    var output = Utils.Run(CSScriptProxy.cscs_path, "-help");
                     File.WriteAllText(file, output);
                 }
                 catch
@@ -447,7 +453,7 @@ namespace Syntaxer
 
         static public string GenerateAutoclassWrapper(string text, ref int position)
         {
-            return csscript.AutoclassGenerator.Process(text, ref position);
+            return CSScriptProxy.AutoclassGenerator.Process(text, ref position);
         }
 
         static public bool NeedsAutoclassWrapper(string text)

@@ -1,3 +1,6 @@
+using Intellisense.Common;
+using Microsoft.CodeAnalysis;
+using RoslynIntellisense;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,9 +13,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Intellisense.Common;
-using RoslynIntellisense;
 
 [assembly: InternalsVisibleTo("syntaxer.tests")]
 
@@ -88,35 +88,35 @@ namespace Syntaxer
             {
                 // Console.WriteLine($"Input {input.cscs_path} ...");
                 // Console.WriteLine($"Probing 0 {csscript.cscs_path} ...");
-                csscript.cscs_path = Path.GetFullPath(input.cscs_path);
+                CSScriptProxy.cscs_path = Path.GetFullPath(input.cscs_path);
             }
-            Console.WriteLine($"Probing {csscript.cscs_path} ...");
+            Console.WriteLine($"Probing {CSScriptProxy.cscs_path} ...");
 
-            if (csscript.cscs_path == null || !File.Exists(csscript.cscs_path))
+            if (CSScriptProxy.cscs_path == null || !File.Exists(CSScriptProxy.cscs_path))
             {
                 Console.WriteLine("Probing cscs.exe ...");
-                if (File.Exists(csscript.default_cscs_path))
+                if (File.Exists(CSScriptProxy.default_cscs_path))
                 {
-                    csscript.cscs_path = csscript.default_cscs_path;
+                    CSScriptProxy.cscs_path = CSScriptProxy.default_cscs_path;
                 }
-                else if (File.Exists(csscript.default_cscs_path2))
+                else if (File.Exists(CSScriptProxy.default_cscs_path2))
                 {
-                    csscript.cscs_path = csscript.default_cscs_path2;
+                    CSScriptProxy.cscs_path = CSScriptProxy.default_cscs_path2;
                 }
-                else if (File.Exists(csscript.default_cscs_path3))
+                else if (File.Exists(CSScriptProxy.default_cscs_path3))
                 {
-                    csscript.cscs_path = csscript.default_cscs_path3;
+                    CSScriptProxy.cscs_path = CSScriptProxy.default_cscs_path3;
                 }
                 else
                     Console.WriteLine("Probing cscs.exe failed...");
             }
             else
-                Console.WriteLine("cscs.exe: " + csscript.cscs_path);
+                Console.WriteLine("cscs.exe: " + CSScriptProxy.cscs_path);
 
             if (input.test)
             {
-                if (csscript.cscs_path == null)
-                    csscript.cscs_path = csscript.default_cscs_path;
+                if (CSScriptProxy.cscs_path == null)
+                    CSScriptProxy.cscs_path = CSScriptProxy.default_cscs_path;
 
                 Test.All();
             }

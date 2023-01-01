@@ -41,10 +41,10 @@ namespace Syntaxer
 
                 if (args.cscs_path != null)
                 {
-                    if (csscript.cscs_path != args.cscs_path)
+                    if (CSScriptProxy.cscs_path != args.cscs_path)
                     {
-                        csscript.cscs_path = Path.GetFullPath(args.cscs_path);
-                        Output.WriteLine(" >> cscs.exe is remapped to: " + csscript.cscs_path);
+                        CSScriptProxy.cscs_path = Path.GetFullPath(args.cscs_path);
+                        Output.WriteLine(" >> cscs.exe is remapped to: " + CSScriptProxy.cscs_path);
                     }
                     return null;
                 }
@@ -389,7 +389,7 @@ namespace Syntaxer
 
         internal static string CodeMap(string script, bool nppSerialization, bool vsCodeSerialization)
         {
-            csscript.Log("CodeMap");
+            CSScriptProxy.Log("CodeMap");
 
             bool vs_code = vsCodeSerialization;
             bool sublime = !vsCodeSerialization && !nppSerialization;

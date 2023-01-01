@@ -30,7 +30,7 @@ namespace syntaxer.core.tests
 
             File.WriteAllText(script, $@"
                     //css_dir {search_dir}
-                    //css_ref {csscript.cscs_path}
+                    //css_ref {CSScriptProxy.cscs_path}
                     //css_ref {Assembly.GetExecutingAssembly().Location}");
 
             Project project = CSScriptHelper.GenerateProjectFor(new SourceInfo(script));
@@ -38,7 +38,7 @@ namespace syntaxer.core.tests
             Assert.NotEmpty(project.Files);
             Assert.Equal(project.Files.First(), script);
             Assert.Equal(project.Files.First(), script);
-            Assert.Contains(csscript.cscs_path, project.Refs);
+            Assert.Contains(CSScriptProxy.cscs_path, project.Refs);
             Assert.Contains(Assembly.GetExecutingAssembly().Location, project.Refs);
             Assert.Contains(search_dir, project.SearchDirs);
         });
