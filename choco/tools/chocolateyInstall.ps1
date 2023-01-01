@@ -1,12 +1,12 @@
 $packageName = 'CS-Syntaxer'
-$url = 'https://github.com/oleg-shilo/syntaxer.core/releases/download/v3.1.1.0/syntaxer.7z'
+$url = 'https://github.com/oleg-shilo/syntaxer.core/releases/download/v3.1.2.0/syntaxer.7z'
 
 Stop-Process -Name "syntaxer" -ErrorAction SilentlyContinue
 
 $installDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 Install-ChocolateyEnvironmentVariable 'CSSYNTAXER_ROOT' $installDir User
 
-$checksum = 'AE0B938699A3BA05AAF28BF316FA258AAFA528C87580B0515F86F8C3DFC44248'
+$checksum = '1D4C6ED6FC00CA86844DBE068620D489E719E2E7A19BBD9CF35C6ACB302E9C63'
 $checksumType = "sha256"
 
 # Download and unpack a zip file

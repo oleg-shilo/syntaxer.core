@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>cs-syntaxer</id>
-        <version>3.1.1.0</version>
+        <version>3.1.2.0</version>
         <title>CS-Syntaxer</title>
         <authors>Oleg Shilo</authors>
         <owners>Oleg Shilo</owners>
@@ -17,9 +17,8 @@
         <description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text) </description>
         <summary>CS-Syntaxer</summary>
         <releaseNotes>
-# Release v3.1.1
-- Updated to process Linux(Mint) testing findings
-- Added output of the self-assembly location on version request
+# Release v3.1.2
+- Ported to .NET7
         </releaseNotes>
         <copyright>Oleg Shilo</copyright>
         <tags>cs-script C# syntax IDE</tags>
