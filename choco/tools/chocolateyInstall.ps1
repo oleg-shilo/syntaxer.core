@@ -6,7 +6,7 @@ Stop-Process -Name "syntaxer" -ErrorAction SilentlyContinue
 $installDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 Install-ChocolateyEnvironmentVariable 'CSSYNTAXER_ROOT' $installDir User
 
-$checksum = '1D4C6ED6FC00CA86844DBE068620D489E719E2E7A19BBD9CF35C6ACB302E9C63'
+$checksum = 'AEACF9FFFBF717A906BDADD1B6846F55101E1BE4CB1BF3F8B0793AFEE70F2E5A'
 $checksumType = "sha256"
 
 # Download and unpack a zip file
