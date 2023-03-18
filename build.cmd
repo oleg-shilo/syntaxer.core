@@ -1,3 +1,4 @@
+dotnet publish -o .\out\syntaxer -c RELEASE syntaxer.cli\syntaxer.cli.csproj
 dotnet publish -o .\out\syntaxer -c RELEASE syntaxer.csproj
 cd .\out\syntaxer
 echo cd: %cd%
