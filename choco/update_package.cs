@@ -12,7 +12,7 @@ Console.WriteLine("Starting...");
 ServicePointManager.Expect100Continue = true;
 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-var url = "https://github.com/oleg-shilo/syntaxer.core/releases/download/v3.1.2.0/syntaxer.7z";
+var url = "https://github.com/oleg-shilo/syntaxer.core/releases/download/v3.1.3.0/syntaxer.7z";
 
 var installScript = @"tools\chocolateyInstall.ps1";
 
