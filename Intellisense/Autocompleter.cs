@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Recommendations;
 using Microsoft.CodeAnalysis.Text;
+using Syntaxer;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -90,6 +91,17 @@ namespace RoslynIntellisense
             return InitWorkspace(workspace, code, null, references, includes);
         }
 
+        static void CheckMem()
+        {
+            long physicalMemoryUsage = Process.GetCurrentProcess().WorkingSet64;
+
+            double megabytes = (double)physicalMemoryUsage / (1024 * 1024);
+
+            Debug.WriteLine($"Memory usage: {megabytes}");
+            Console.WriteLine($"Memory usage: {megabytes}");
+        }
+
+        static Dictionary<string, MetadataReference> inprocGAC = new();
         public static Document InitWorkspace(AdhocWorkspace workspace, string code, string file = null, string[] references = null, IEnumerable<Tuple<string, string>> includes = null)
         {
             string projName = "NewProject";
@@ -100,7 +112,27 @@ namespace RoslynIntellisense
             var refs = new List<MetadataReference>(builtInLibs.Value);
 
             if (references != null)
-                refs.AddRange(references.Select(a => MetadataReference.CreateFromFile(a, documentation: NppDocumentationProvider.NewFor(a))));
+            {
+                // CheckMem();
+
+                foreach (var asm in references.Distinct())
+                {
+                    if (inprocGAC.TryGetValue(asm, out var metadata))
+                    {
+                        refs.Add(metadata);
+                    }
+                    else
+                    {
+                        var metadataRef = MetadataReference.CreateFromFile(asm, documentation: NppDocumentationProvider.NewFor(asm));
+                        refs.Add(metadataRef);
+                        if (asm.IsSharedAssemblyPath()) // .NET shared assembly
+                            inprocGAC[asm] = metadataRef;
+
+                    }
+                }
+
+                // CheckMem();
+            }
 
             var lng = Autocompleter.Language == "C#" ? LanguageNames.CSharp : LanguageNames.VisualBasic;
             var projectInfo = ProjectInfo.Create(projectId, versionStamp, projName, projName, lng, metadataReferences: refs);

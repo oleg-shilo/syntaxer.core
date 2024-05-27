@@ -267,6 +267,14 @@ namespace Syntaxer
             }
         }
 
+        public static bool IsSharedAssemblyPath(this string path)
+        {
+            // Linux:   usr\share\dotnet\sdk\8.0.100
+            // Windows: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.5
+
+            return (path.Contains("shared") || path.Contains("share")) && path.Contains("dotnet");
+        }
+
         public static bool IsWinows = Environment.OSVersion.Platform == PlatformID.Win32NT
                                    || Environment.OSVersion.Platform == PlatformID.Win32S
                                    || Environment.OSVersion.Platform == PlatformID.Win32Windows
