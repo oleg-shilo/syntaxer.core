@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>cs-syntaxer</id>
-        <version>3.1.3.0</version>
+        <version>3.1.4.0</version>
         <title>CS-Syntaxer</title>
         <authors>Oleg Shilo</authors>
         <owners>Oleg Shilo</owners>
@@ -17,8 +17,9 @@
         <description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text) </description>
         <summary>CS-Syntaxer</summary>
         <releaseNotes>
-# Release v3.1.2
-- Ported to .NET7
+# Release v3.1.4
+- Issue #1: Huge memory usage from reference lookup
+
         </releaseNotes>
         <copyright>Oleg Shilo</copyright>
         <tags>cs-script C# syntax IDE</tags>
