@@ -1,5 +1,3 @@
-using Intellisense.Common;
-using RoslynIntellisense;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,6 +5,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml.Linq;
+using Intellisense.Common;
+using RoslynIntellisense;
 
 namespace Syntaxer
 {
@@ -96,6 +96,7 @@ namespace Syntaxer
         static string _cscs_path;
 
 #pragma warning disable IDE1006 // Naming Styles
+
         static public string cscs_path
 #pragma warning restore IDE1006 // Naming Styles
         {
@@ -139,6 +140,7 @@ namespace Syntaxer
             }
 
 #pragma warning disable IDE1006 // Naming Styles
+
             static object cscs_GenerateProjectFor(string script)
 #pragma warning restore IDE1006 // Naming Styles
             {
@@ -146,11 +148,12 @@ namespace Syntaxer
             }
 
 #pragma warning disable IDE1006 // Naming Styles
+
             internal static string cscs_GetScriptTempDir()
 #pragma warning restore IDE1006 // Naming Styles
             {
                 return (string)CSScriptProxy.Cscs_asm.GetLoadableTypes().Where(t => t.Name == "CSExecutor").First()
-                                                .GetMethod("GetScriptTempDir", BindingFlags.Public | BindingFlags.Static)
+                                            .GetMethod("GetScriptTempDir", BindingFlags.Public | BindingFlags.Static)
                                                 .Invoke(null, new object[0]);
             }
 
@@ -311,6 +314,33 @@ namespace Syntaxer
 
     static class CSScriptHelper
     {
+        static public string Detect()
+        {
+            var css = "css1".Run();
+            var cssPath = "";
+            if (css.exitCode == 0)
+            {
+                cssPath = css.output.Lines().FirstOrDefault(x => x.Contains("Script engine:")).Split(':', 2).Last().Trim();
+                if (!cssPath.IsEmpty())
+                {
+                    try
+                    {
+                        Assembly.LoadFrom(cssPath);
+                    }
+                    catch
+                    {
+                        cssPath = "";
+                    }
+                }
+            }
+
+            var result = $"""
+                css: {cssPath}
+                syntaxer: {Assembly.GetExecutingAssembly().Location}
+                """;
+            return result;
+        }
+
         static public Project GenerateProjectFor(SourceInfo script)
         {
             if (script.File == script.RawFile)
@@ -385,7 +415,7 @@ namespace Syntaxer
             {
                 try
                 {
-                    var output = Utils.Run(CSScriptProxy.cscs_path, "-help");
+                    var output = Utils.DotnetRun(CSScriptProxy.cscs_path, "-help");
                     File.WriteAllText(file, output);
                 }
                 catch

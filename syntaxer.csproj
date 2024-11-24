@@ -1,70 +1,79 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>syntaxer</RootNamespace>
-    <AssemblyName>syntaxer</AssemblyName>
-    <AssemblyVersion>3.1.4.0</AssemblyVersion>
-    <FileVersion>3.1.4.0</FileVersion>
-    <Version>3.1.2.0</Version>
-    <PackageReleaseNotes>- Added setting `CSS_ENTRY_ASM` envar to allow discovery of `root/lib/global-usings.cs` </PackageReleaseNotes>
-    <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
-    <Authors>Oleg Shilo</Authors>
-    <Copyright>(C) 2022 Oleg Shilo</Copyright>
-    <PackageId>cs-syntaxer</PackageId>
-    <Product>cs-syntaxer</Product>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/oleg-shilo/syntaxer.core/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/oleg-shilo/syntaxer.core/</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>cs-script C# syntax IDE</PackageTags>
-    <PackageIcon>css_logo.png</PackageIcon>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="choco\**" />
-    <Compile Remove="syntaxer.cli\**" />
-    <Compile Remove="syntaxer.core.cli\**" />
-    <Compile Remove="syntaxer.core.tests\**" />
-    <Compile Remove="syntaxer.tests\**" />
-    <EmbeddedResource Remove="choco\**" />
-    <EmbeddedResource Remove="syntaxer.cli\**" />
-    <EmbeddedResource Remove="syntaxer.core.cli\**" />
-    <EmbeddedResource Remove="syntaxer.core.tests\**" />
-    <EmbeddedResource Remove="syntaxer.tests\**" />
-    <None Remove="choco\**" />
-    <None Remove="syntaxer.cli\**" />
-    <None Remove="syntaxer.core.cli\**" />
-    <None Remove="syntaxer.core.tests\**" />
-    <None Remove="syntaxer.tests\**" />
-    <None Include="logo\css_logo.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Program.test.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Program.test.cs" />
-  </ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <RootNamespace>syntaxer</RootNamespace>
+        <AssemblyName>syntaxer</AssemblyName>
+        <AssemblyVersion>3.2.0.0</AssemblyVersion>
+        <FileVersion>3.2.0.0</FileVersion>
+        <Version>3.2.0.0</Version>
+        <PackageReleaseNotes>- Rebuild for .NET 9.0</PackageReleaseNotes>
+        <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
+        <Authors>Oleg Shilo</Authors>
+        <Copyright>(C) 2022 Oleg Shilo</Copyright>
+        <PackageId>cs-syntaxer</PackageId>
+        <Product>cs-syntaxer</Product>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/oleg-shilo/syntaxer.core/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/oleg-shilo/syntaxer.core/</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>cs-script C# syntax IDE</PackageTags>
+        <PackageIcon>css_logo.png</PackageIcon>
+        <Title>cs-syntaxer</Title>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>syntaxer</ToolCommandName>
+        <PackageOutputPath>./nupkg</PackageOutputPath>
 
 
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.9.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.9.2" />
-    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
-  </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="rem md &quot;$(ProjectDir)out&quot;&#xD;&#xA;rem md &quot;$(ProjectDir)out\runtimes&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.dll&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.exe&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.json&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem xcopy &quot;$(TargetDir)runtimes&quot;  &quot;$(ProjectDir)out\runtimes&quot; /s /i /y" />
-  </Target>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Remove="choco\**" />
+        <Compile Remove="syntaxer.cli\**" />
+        <Compile Remove="syntaxer.core.cli\**" />
+        <Compile Remove="syntaxer.core.tests\**" />
+        <Compile Remove="syntaxer.tests\**" />
+        <EmbeddedResource Remove="choco\**" />
+        <EmbeddedResource Remove="syntaxer.cli\**" />
+        <EmbeddedResource Remove="syntaxer.core.cli\**" />
+        <EmbeddedResource Remove="syntaxer.core.tests\**" />
+        <EmbeddedResource Remove="syntaxer.tests\**" />
+        <None Remove="choco\**" />
+        <None Remove="syntaxer.cli\**" />
+        <None Remove="syntaxer.core.cli\**" />
+        <None Remove="syntaxer.core.tests\**" />
+        <None Remove="syntaxer.tests\**" />
+        <None Include="logo\css_logo.png">
+            <Pack>True</Pack>
+            <PackagePath></PackagePath>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Program.test.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="Program.test.cs" />
+    </ItemGroup>
+
+
+
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.11.0" />
+        <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.0" />
+    </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+        <Exec Command="rem md &quot;$(ProjectDir)out&quot;&#xD;&#xA;rem md &quot;$(ProjectDir)out\runtimes&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.dll&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.exe&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem copy &quot;$(TargetDir)*.json&quot;  &quot;$(ProjectDir)out\&quot;&#xD;&#xA;rem xcopy &quot;$(TargetDir)runtimes&quot;  &quot;$(ProjectDir)out\runtimes&quot; /s /i /y" />
+    </Target>
 
 </Project>

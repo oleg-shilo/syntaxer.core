@@ -1,6 +1,3 @@
-using Intellisense.Common;
-using Microsoft.CodeAnalysis;
-using RoslynIntellisense;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +10,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Intellisense.Common;
+using RoslynIntellisense;
 
 [assembly: InternalsVisibleTo("syntaxer.tests")]
 
@@ -47,6 +47,11 @@ namespace Syntaxer
                 Console.WriteLine("Copyright (C) 2022 Oleg Shilo (github.com/oleg-shilo/syntaxer.core)");
                 Console.WriteLine("Path: " + Assembly.GetExecutingAssembly().Location);
 
+                return;
+            }
+            else if (!args.Any() || args.Contains("-detect"))
+            {
+                Console.WriteLine(CSScriptHelper.Detect());
                 return;
             }
 

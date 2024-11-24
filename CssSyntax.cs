@@ -1,9 +1,9 @@
-using Intellisense.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Intellisense.Common;
 
 namespace Syntaxer
 {
@@ -19,7 +19,7 @@ namespace Syntaxer
                     .EnsureDir()
                     .DeleteDirFiles("cs-script.*.help.txt");
 
-                try { File.WriteAllText(file, Utils.Run(CSScriptProxy.cscs_path, "-?")); }
+                try { File.WriteAllText(file, Utils.DotnetRun(CSScriptProxy.cscs_path, "-?")); }
                 catch { }
             }
             return file;
@@ -120,13 +120,13 @@ namespace Syntaxer
                 }
 
                 AllDirectives = help_map.Select(x =>
-                                            new CssCompletionData
-                                            {
-                                                CompletionText = x.Key,
-                                                DisplayText = x.Key,
-                                                Description = x.Value.text
-                                            })
-                                            .ToArray();
+                                         new CssCompletionData
+                                             {
+                                                 CompletionText = x.Key,
+                                                 DisplayText = x.Key,
+                                                 Description = x.Value.text
+                                             })
+                                             .ToArray();
             }
         }
 
@@ -195,7 +195,8 @@ Examples:
     //css_dir packages\\**"
             },
 
-            new CssCompletionData {
+            new CssCompletionData
+            {
                 CompletionText = "//css_nuget", DisplayText="//css_nuget",
                 Description =
 @"'Reference NuGet package' directive. This directive not only download the package but also references its assembly(s)

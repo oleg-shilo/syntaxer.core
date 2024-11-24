@@ -276,9 +276,9 @@ namespace Syntaxer
         }
 
         public static bool IsWinows = Environment.OSVersion.Platform == PlatformID.Win32NT
-                                   || Environment.OSVersion.Platform == PlatformID.Win32S
-                                   || Environment.OSVersion.Platform == PlatformID.Win32Windows
-                                   || Environment.OSVersion.Platform == PlatformID.WinCE;
+                                      || Environment.OSVersion.Platform == PlatformID.Win32S
+                                      || Environment.OSVersion.Platform == PlatformID.Win32Windows
+                                      || Environment.OSVersion.Platform == PlatformID.WinCE;
 
         public static bool IsProcessRunning(int id)
         {
@@ -374,7 +374,7 @@ namespace Syntaxer
             return dir;
         }
 
-        public static string Run(string exe, string args)
+        public static string DotnetRun(string exe, string args)
         {
             var output = new StringBuilder();
 
@@ -402,6 +402,36 @@ namespace Syntaxer
             }
             proc.WaitForExit();
             return output.ToString();
+        }
+
+        public static (int exitCode, string output) Run(this string exe, string arguments = "", string workingDir = "")
+        {
+            try
+            {
+                using (var process = new Process())
+                {
+                    process.StartInfo.FileName = exe;
+                    process.StartInfo.Arguments = arguments;
+                    process.StartInfo.UseShellExecute = false;
+                    process.StartInfo.RedirectStandardOutput = true;
+                    process.StartInfo.RedirectStandardError = true;
+                    process.StartInfo.WorkingDirectory = workingDir;
+                    process.StartInfo.CreateNoWindow = true;
+                    process.Start();
+
+                    var output = new StringBuilder();
+
+                    output.AppendLine(process.StandardOutput.ReadToEnd());
+                    output.AppendLine(process.StandardError.ReadToEnd());
+
+                    process.WaitForExit();
+                    return (process.ExitCode, output.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                return (-1, e.Message);
+            }
         }
     }
 

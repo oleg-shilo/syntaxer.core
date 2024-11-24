@@ -121,6 +121,9 @@ namespace RoslynIntellisense
             return Path.GetExtension(path);
         }
 
+        public static string[] Lines(this string text)
+            => text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+
         public static string JoinBy(this IEnumerable<string> items, string separator = "")
         {
             return string.Join(separator, items.ToArray());
