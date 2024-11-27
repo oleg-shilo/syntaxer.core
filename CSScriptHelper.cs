@@ -316,7 +316,7 @@ namespace Syntaxer
     {
         static public string Detect()
         {
-            var css = "css1".Run();
+            var css = "css".Run();
             var cssPath = "";
             if (css.exitCode == 0)
             {

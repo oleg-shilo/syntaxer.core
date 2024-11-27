@@ -34,12 +34,26 @@ using RoslynIntellisense;
 //  - requires no special permissions on Linux (even if it does on Win)
 //  - full control of cleanup (as there is none)
 
+/// Ports:
+/// 18000 - Sublime Text 3
+/// 18001 - Notepad++
+/// 18002 - VSCode.CodeMap
+/// 18003 - VSCode.CS-Script
 namespace Syntaxer
 {
     class Server
     {
+        // -port:18003 -listen -timeout:60000 cscs_path:C:\Users\<user>\AppData\Roaming\Code\User\cs-script.user\syntaxer\1.2.2.0\cscs.exe
         static void Main(string[] args)
         {
+#if DEBUG
+            // foreach (var process in Process.GetProcessesByName("dotnet").Where(x => x.Id != Process.GetCurrentProcess().Id))
+            //    try
+            //    {
+            //        process.Kill();
+            //    }
+            //    catch { }
+#endif
             if (!args.Any() || args.Contains("-?") || args.Contains("--help") || args.Contains("-help"))
             {
                 Console.WriteLine("CS-Syntaxer v" + Assembly.GetExecutingAssembly().GetName().Version);
