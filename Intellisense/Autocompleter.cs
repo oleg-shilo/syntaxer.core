@@ -1,11 +1,3 @@
-using Intellisense.Common;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Recommendations;
-using Microsoft.CodeAnalysis.Text;
-using Syntaxer;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -15,6 +7,14 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
+using Microsoft.CodeAnalysis.Recommendations;
+using Microsoft.CodeAnalysis.Text;
+using Intellisense.Common;
+using Syntaxer;
 using VB = Microsoft.CodeAnalysis.VisualBasic;
 
 namespace RoslynIntellisense
@@ -102,6 +102,7 @@ namespace RoslynIntellisense
         }
 
         static Dictionary<string, MetadataReference> inprocGAC = new();
+
         public static Document InitWorkspace(AdhocWorkspace workspace, string code, string file = null, string[] references = null, IEnumerable<Tuple<string, string>> includes = null)
         {
             string projName = "NewProject";
@@ -127,7 +128,6 @@ namespace RoslynIntellisense
                         refs.Add(metadataRef);
                         if (asm.IsSharedAssemblyPath()) // .NET shared assembly
                             inprocGAC[asm] = metadataRef;
-
                     }
                 }
 
@@ -989,6 +989,25 @@ namespace RoslynIntellisense
             var types = nodes.OfType<TypeDeclarationSyntax>()
                              .OrderBy(x => x.FullSpan.End)
                              .ToArray();
+
+            var globalMethods = nodes.OfType<GlobalStatementSyntax>()
+                                .Where(x => x.Statement.Kind() == SyntaxKind.LocalFunctionStatement)
+                                .OrderBy(x => x.FullSpan.End)
+                                .Select(x => (x.Statement as LocalFunctionStatementSyntax))
+                                .ToArray();
+
+            foreach (var localFunc in globalMethods)
+            {
+                map.Add(new CodeMapItem
+                {
+                    Line = localFunc.GetLocation().GetLineSpan().StartLinePosition.Line + 1,
+                    Column = localFunc.GetLocation().GetLineSpan().StartLinePosition.Character,
+                    DisplayName = localFunc.Identifier.Text + "(" + new string(',', Math.Max(localFunc.ParameterList.Parameters.Count - 1, 0)) + ")",
+                    ParentDisplayName = "...",
+                    ParentDisplayType = "",
+                    MemberType = "Method"
+                });
+            }
 
             foreach (EnumDeclarationSyntax type in nodes.OfType<EnumDeclarationSyntax>())
             {

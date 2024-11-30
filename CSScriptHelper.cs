@@ -307,7 +307,7 @@ namespace Syntaxer
                     return result;
                 }
                 catch { }
-                return null;
+                return text;
             }
         }
     }

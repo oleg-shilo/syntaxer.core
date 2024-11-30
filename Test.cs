@@ -11,15 +11,16 @@ namespace Syntaxer
     {
         public static void All()
         {
-            var trigegr_loadig_var = CSScriptProxy.Cscs_asm;
+            // var trigegr_loadig_var = CSScriptProxy.Cscs_asm;
             //Test.DryRun(); return;
             // Test.AssignmentCompletion(); ;
             // Test.Renaming();
             // Test.CodeMapVSCode();
+            Test.CodeMapTopLevelClass();
             // Test.Format();
 
             //Test.CSSResolving();
-            Test.CSSCompletion();
+            // Test.CSSCompletion();
             //Test.CSSResolving2();
             // Test.CSSTooltipResolving();
         }
@@ -43,6 +44,44 @@ namespace Syntaxer
             {
                 Output.WriteLine("failed");
                 Output.WriteLine(e);
+            }
+        }
+
+        public static void CodeMapTopLevelClass()
+        {
+            var script = Path.GetTempFileName();
+
+            Output.WriteLine("---");
+            Output.Write("CodeMap-VSCode: ");
+
+            try
+            {
+                var code = @"
+Consssole.WriteLine(""Hello"");
+
+void ttt()
+{
+}
+
+static class Extensions
+{
+    static public void Convert(this string text)
+    {
+    }
+}";
+                File.WriteAllText(script, code);
+                var map = SyntaxProvider.CodeMap(script, false, true);
+
+                Output.WriteLine("OK");
+            }
+            catch (Exception e)
+            {
+                Output.WriteLine("failed");
+                Output.WriteLine(e);
+            }
+            finally
+            {
+                try { File.Delete(script); } catch { }
             }
         }
 
