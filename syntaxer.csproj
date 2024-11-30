@@ -5,11 +5,11 @@
         <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <RootNamespace>syntaxer</RootNamespace>
         <AssemblyName>syntaxer</AssemblyName>
-        <AssemblyVersion>3.2.1.0</AssemblyVersion>
-        <FileVersion>3.2.1.0</FileVersion>
-        <Version>3.2.1.0</Version>
+        <AssemblyVersion>3.2.2.0</AssemblyVersion>
+        <FileVersion>3.2.2.0</FileVersion>
+        <Version>3.2.2.0</Version>
         <PackageReleaseNotes>- Rebuild for .NET 9.0</PackageReleaseNotes>
-        <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendable IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
+        <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendibles IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
         <Authors>Oleg Shilo</Authors>
         <Copyright>(C) 2022 Oleg Shilo</Copyright>
         <PackageId>cs-syntaxer</PackageId>
