@@ -62,7 +62,7 @@ namespace Syntaxer
                             _cscs_asm = Assembly.Load(File.ReadAllBytes(cscs_path));
 
                             GenerateProjectFor_Method = _cscs_asm.GetLoadableTypes()
-                                                                 .FirstOrDefault(t => t.Name == "ProjectBuilder")
+                                                                 .FirstOrDefault(t => t.Name == "Project")
                                                                  .GetMethod("GenerateProjectFor", BindingFlags.Public | BindingFlags.Static);
 
                             var runtime_class = _cscs_asm.GetLoadableTypes()

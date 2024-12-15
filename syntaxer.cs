@@ -47,12 +47,12 @@ namespace Syntaxer
         static void Main(string[] args)
         {
 #if DEBUG
-            // foreach (var process in Process.GetProcessesByName("dotnet").Where(x => x.Id != Process.GetCurrentProcess().Id))
-            //    try
-            //    {
-            //        process.Kill();
-            //    }
-            //    catch { }
+            foreach (var process in Process.GetProcessesByName("dotnet").Where(x => x.Id != Process.GetCurrentProcess().Id))
+                try
+                {
+                    process.Kill();
+                }
+                catch { }
 #endif
             if (!args.Any() || args.Contains("-?") || args.Contains("--help") || args.Contains("-help"))
             {
