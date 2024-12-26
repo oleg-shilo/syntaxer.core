@@ -35,6 +35,39 @@ namespace RoslynIntellisense
             return items;
         }
 
+        public static string EnsureFileDir(this string file, bool rethrow = true)
+        {
+            try
+            {
+                file.GetDirName().EnsureDir();
+                return file;
+            }
+            catch { if (rethrow) throw; }
+            return null;
+        }
+
+        public static string EnsureDir(this string path, bool rethrow = true)
+        {
+            try
+            {
+                Directory.CreateDirectory(path);
+
+                return path;
+            }
+            catch { if (rethrow) throw; }
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the special folder path.
+        /// </summary>
+        /// <param name="folder">The folder.</param>
+        /// <returns>A folder path.</returns>
+        public static string GetPath(this Environment.SpecialFolder folder)
+        {
+            return Environment.GetFolderPath(folder);
+        }
+
         public static string ToLiteral(this string input)
         {
             return SyntaxFactory.LiteralExpression(SyntaxKind.StringLiteralExpression, SyntaxFactory.Literal(input)).ToFullString();

@@ -5,7 +5,8 @@
             "commandLineArgs1": "",
 
             "commandLineArgs0": "-listen -port:18000 -timeout:60000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.8.23.0\\cs-script.cli\\4.8.23.0\\tools\\net9.0\\any\\cscs.dll\"",
-            "commandLineArgs": "-listen -port:18000 -timeout:60000 -cscs_path:D:\\dev\\cs-script\\src\\cscs\\bin\\Debug\\net9.0\\cscs.dll"
+            "commandLineArgs": "-ls k *"
+            // "commandLineArgs": "-listen -port:18000 -timeout:60000 -cscs_path:D:\\dev\\cs-script\\src\\cscs\\bin\\Debug\\net9.0\\cscs.dll"
         }
     }
 }

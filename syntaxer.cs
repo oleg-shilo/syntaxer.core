@@ -60,12 +60,69 @@ namespace Syntaxer
                 Console.WriteLine("Syntax provider for C# scripts (cs-script).");
                 Console.WriteLine("Copyright (C) 2022 Oleg Shilo (github.com/oleg-shilo/syntaxer.core)");
                 Console.WriteLine("Path: " + Assembly.GetExecutingAssembly().Location);
+                Console.WriteLine("------------");
+                Console.WriteLine("-detect");
+                Console.WriteLine("    Prints location of the detected CS-Script installation as well as its own assembly path.");
+                Console.WriteLine("-list|-ls [<kill|k> [*]]");
+                Console.WriteLine("    Prints list of all currently running syntaxer services.");
+                Console.WriteLine("    kill|k - Allow user to select and terminate any running syntaxer service.");
+                Console.WriteLine("    * - Allow user to terminate all running syntaxer service when 'kill' option is used.");
+                Console.WriteLine("    *   (e.g. syntaxer -list kill * ).");
 
                 return;
             }
-            else if (!args.Any() || args.Contains("-detect"))
+            else if (args.Contains("-detect"))
             {
                 Console.WriteLine(CSScriptHelper.Detect());
+                return;
+            }
+            else if (args.Contains("-list") || args.Contains("-ls"))
+            {
+                var result = Runtime.GetScriptProcessLog();
+
+                if (!result.processes.Any())
+                {
+                    Console.WriteLine("No syntaxer process found.");
+                }
+                else
+                {
+                    if (args.Contains("kill") || args.Contains("-kill") || args.Contains("k"))
+                    {
+                        if (args.Contains("*"))
+                        {
+                            foreach (var pid in result.processes.Select(x => x.pid).Where(x => x != 0))
+                                try { Process.GetProcessById(pid).Kill(); }
+                                catch { }
+                        }
+                        else
+                        {
+                            Console.WriteLine(result.view);
+                            Console.WriteLine("Enter index of the syntaxer process you want to terminate or '*' to terminate them all:");
+                            var userInput = Console.ReadLine().ToLower();
+                            if (userInput == "*")
+                            {
+                                foreach (var pid in result.processes.Select(x => x.pid).Where(x => x != 0))
+                                    try { Process.GetProcessById(pid).Kill(); }
+                                    catch { }
+                            }
+                            else
+                            {
+                                var pid = result.processes.FirstOrDefault(x => x.index == userInput).pid;
+                                if (pid != 0)
+                                    try
+                                    {
+                                        Process.GetProcessById(pid).Kill();
+                                    }
+                                    catch { }
+                                else
+                                    Console.WriteLine("Invalid user input.");
+                            }
+                        }
+                    }
+                    else
+                        Console.WriteLine(result.view);
+                }
+
                 return;
             }
 
@@ -77,6 +134,7 @@ namespace Syntaxer
             Output.WriteLine(asm_root_dir);
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
+            Runtime.LogScriptProcess();
             Run(input);
         }
 
@@ -96,7 +154,7 @@ namespace Syntaxer
         private static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             return Probe(asm_root_dir, args.Name) ??
-                   Probe(asm_root_dir.PathJoin("Fasades"), args.Name) ??
+                   Probe(asm_root_dir.PathJoin("Facades"), args.Name) ??
                    Probe(Local_dir, args.Name) ??
                    ProbeAlreadyLoaded(args.ShortName());
         }
@@ -300,5 +358,144 @@ namespace Syntaxer
         // "format" - request
         public static string FormatCode(string script, ref int caretPos)
             => SyntaxProvider.FormatCode(script, ref caretPos);
+    }
+}
+
+class Runtime
+{
+    internal static ((string index, int pid)[] processes, string view) GetScriptProcessLog()
+    {
+        var result = new List<(string index, int pid)>();
+
+        var currentProcId = Process.GetCurrentProcess().Id;
+        var i = 0;
+
+        var builder = new StringBuilder();
+        builder.AppendLine($"#   | PID        | Arguments");
+        builder.AppendLine($"----------------------------");
+        foreach ((int pid, string args) in Runtime.GetScriptProcesses().OrderByDescending(x => x.pid == currentProcId))
+        {
+            var current = pid == currentProcId ? "*" : " ";
+            builder.AppendLine($"{current}{++i:D2} | {pid:D10} | {args}");
+            result.Add((i.ToString(), pid));
+        }
+
+        return (result.ToArray(), builder.ToString());
+    }
+
+    static (int pid, string args)[] GetScriptProcesses()
+    {
+        (int pid, string args)[] result = null;
+
+        {
+            List<string> lines = null;
+            using (var mutex = new Mutex(false, mutexName))
+            {
+                try
+                {
+                    mutex.WaitOne();
+
+                    try
+                    {
+                        if (File.Exists(filePath))
+                            lines = File.ReadAllLines(filePath).ToList();
+                    }
+                    catch { }
+                }
+                finally
+                {
+                    mutex.ReleaseMutex();
+                }
+            }
+
+            if (lines == null)
+                result = [(0, "<syntaxer tracking information is not available>")];
+            else
+                result = lines.Select(x =>
+                {
+                    var parts = x.Split(':', 2);
+                    try
+                    {
+                        if (int.TryParse(parts.First(), out int pid))
+                            return (pid, parts.Last()?.Trim());
+                    }
+                    catch
+                    {
+                    }
+                    return (0, "<invalid syntaxer tracking information>");
+                })
+                    .Where(x =>
+                           {
+                               try
+                               {
+                                   return Process.GetProcessById(x.Item1) != null;
+                               }
+                               catch { return false; }
+                           })
+                               .ToArray();
+        }
+
+        return result;
+    }
+
+    static string mutexName = "Global\\CSSyntaxerProcessListMutex"; // Global name for cross-process synchronization
+    static string filePath = Environment.SpecialFolder.LocalApplicationData.GetPath().PathJoin("cs-syntaxer", "p-list");
+
+    static bool IsRunningProcess(string processLog)
+    {
+        try
+        {
+            // <pid>: <args>
+            return Process.GetProcessById(int.Parse(processLog.Split(':', 2)[0])) != null;
+        }
+        catch { return false; }
+    }
+
+    internal static void ClearScriptProcessLog()
+    {
+        using (var mutex = new Mutex(false, mutexName))
+        {
+            try
+            {
+                mutex.WaitOne();
+
+                List<string> lines = null;
+
+                if (File.Exists(filePath))
+                    lines = File.ReadAllLines(filePath).Where(IsRunningProcess).ToList();
+
+                if (lines != null)
+                    File.WriteAllLines(filePath, lines);
+            }
+            finally
+            {
+                mutex.ReleaseMutex();
+            }
+        }
+    }
+
+    internal static void LogScriptProcess()
+    {
+        using (var mutex = new Mutex(false, mutexName))
+        {
+            try
+            {
+                mutex.WaitOne();
+                filePath.EnsureFileDir();
+                var currentProcess = $"{Process.GetCurrentProcess().Id}: {Environment.CommandLine}";
+
+                List<string> lines = File.Exists(filePath)
+                                         ? File.ReadAllLines(filePath).Where(IsRunningProcess).ToList()
+                                         : [];
+
+                lines.Add(currentProcess);
+
+                File.WriteAllLines(filePath, lines.ToArray());
+            }
+            finally
+            {
+                mutex.ReleaseMutex();
+            }
+        }
     }
 }
