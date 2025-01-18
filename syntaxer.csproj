@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
         <RootNamespace>syntaxer</RootNamespace>
         <AssemblyName>syntaxer</AssemblyName>
         <AssemblyVersion>3.2.4.0</AssemblyVersion>
