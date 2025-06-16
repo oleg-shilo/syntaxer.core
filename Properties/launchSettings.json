@@ -3,7 +3,7 @@
         "syntaxer.core": {
             "commandName": "Project",
             "commandLineArgs1": "",
-            "commandLineArgs": "-listen -port:18003 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.8.25\\cs-script.cli\\4.8.25\\tools\\net9.0\\any\\cscs.dll\""
+            "commandLineArgs": "-listen -port:18004 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.8.25\\cs-script.cli\\4.8.25\\tools\\net9.0\\any\\cscs.dll\""
             // "commandLineArgs": "-ls k *"
             // "commandLineArgs": "-listen -port:18000 -timeout:60000 -cscs_path:D:\\dev\\cs-script\\src\\cscs\\bin\\Debug\\net9.0\\cscs.dll"
         }

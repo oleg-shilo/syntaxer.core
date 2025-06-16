@@ -29,7 +29,7 @@ static class Global
             else
             {
                 cscs = @"C:\ProgramData\chocolatey\lib\cs-script\tools\cscs.dll";
-                cscs = @"C:\Users\oleg.shilo\AppData\Roaming\Code\User\cs-script.user\dotnet\cscs.dll";
+                cscs = @"C:\Users\oleg\.dotnet\tools\.store\cs-script.cli\4.9.8\cs-script.cli\4.9.8\tools\net9.0\any\cscs.dll";
                 // cscs = Environment.GetEnvironmentVariable("CSSCRIPT_DIR")?.PathJoin("cscs.dll");
                 if (File.Exists(cscs))
                     CSScriptProxy.cscs_path = cscs;

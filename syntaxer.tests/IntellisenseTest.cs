@@ -1,13 +1,14 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using RoslynIntellisense;
-using Syntaxer;
+using System;
 using System.Diagnostics;
+using static System.Environment;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Global;
-using static System.Environment;
+using RoslynIntellisense;
+using Syntaxer;
+using Xunit;
 
 namespace syntaxer.core.tests
 {
@@ -102,7 +103,7 @@ var t = typeof(NLog.Config.Ad|);"
                                        Console.WriteLine(22|
                                    }
                                }"
-                               .ToTestData(scriptFile);
+                            .ToTestData(scriptFile);
 
             var info = TestServices.GetSignatureHelp(scriptFile, caret).Split(NewLine);
 
@@ -127,7 +128,7 @@ var t = typeof(NLog.Config.Ad|);"
                       File
                   }
               }"
-              .ToTestData(scriptFile);
+                .ToTestData(scriptFile);
 
             var usings = TestServices.FindUsings(scriptFile, "File").Split(NewLine);
 
@@ -136,6 +137,48 @@ var t = typeof(NLog.Config.Ad|);"
 
             Assert.Contains("System.IO", usings);
             Assert.Contains("System.Net", usings);
+        });
+
+        [Fact]
+        public static void Format() => WithDisposable(scriptFile =>
+        {
+            (var caret, var code) = ("\n" +
+            "using System;\n" +
+            "          class Program\n" +
+            "              {\n" +
+            "\n" +
+            "\n" +
+            "static void Main(|string[] args)\n" +
+            "   {\n" +
+            " }\n" +
+            "}")
+                .ToTestData(scriptFile);
+            var newPos = caret;
+            var newCode = TestServices.FormatCode(scriptFile, ref newPos);
+            var codeAfterCaret = code.Substring(caret);
+            var newCodeAfterCaret = newCode.Substring(newPos);
+            Assert.Equal(codeAfterCaret.Substring(0, 10), newCodeAfterCaret.Substring(0, 10));
+        });
+
+        [Fact]
+        public static void FindReferences() => WithDisposable(scriptFile =>
+        {
+            (var caret, var code) = @"
+                using System;
+                class Program
+                {
+                    static void Main(st|ring[] args)
+                    {
+                        string test = """";
+                        Console.WriteLine(""Hello, World!"");
+                     }
+                    }
+                )"
+                .ToTestData(scriptFile);
+            var newPos = caret;
+            var newCode = TestServices.FindRefreneces(scriptFile, newPos);
+
+            // Assert.Equal(codeAfterCaret.Substring(0, 10), newCodeAfterCaret.Substring(0, 10));
         });
 
         [Fact]
@@ -151,9 +194,12 @@ var t = typeof(NLog.Config.Ad|);"
                                        Console.Write|Line(22);
                                    }
                                }"
-                               .ToTestData(scriptFile);
+                .ToTestData(scriptFile);
 
             var tooltip = TestServices.GetTooltip(scriptFile, caret, null, true);
+            //var tooltip = TestServices.GetTooltip(scriptFile, caret, "(8,5,7)", false);
+
+            Console.WriteLine(22);
 
             // Method: void Console.WriteLine(int value) (+ 17 overloads)
             Assert.StartsWith("Method: void Console.WriteLine(int value) (+", tooltip);
@@ -167,7 +213,7 @@ var t = typeof(NLog.Config.Ad|);"
             try
             {
                 (int caret, var code) =
-                        @"using System;
+                         @"using System;
                           using System.Linq;
 
                           class Script
@@ -177,7 +223,7 @@ var t = typeof(NLog.Config.Ad|);"
                                   Console.Write|Line(333);
                               }
                           }"
-                          .ToTestData(scriptFile);
+                         .ToTestData(scriptFile);
 
                 var word = code.WordAt(caret);
 
