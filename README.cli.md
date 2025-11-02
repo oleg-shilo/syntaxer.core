@@ -4,6 +4,26 @@
 
 CS-Syntaxer is a syntax provider for C# scripts (cs-script) that offers IntelliSense and code analysis services. This command-line interface provides access to syntax analysis features that can be integrated with various editors and IDEs.
 
+At runtime interaction with between the syntaxer and the application is done via socket. Typically, the client application starts syntaxer server which starts listening to the user specified port. When client sends a request and receives the response (both are in teh plain text formats). See Commands section below.
+
+When developing applications using syntaxer it's convenient to do testing and experiments by using a simple CLI client application that takes the request parameters as CLI arguments, sends then to teh syntaxer server and prints the response. It does for C# syntaxer the same thing that curl utility for teh web server.  
+
+Starting syntaxer service:
+
+```txt
+D:\dev> syntaxer.exe -listen -port:18004 -timeout:600000 "-cscs_path:C:\Users\user\.dotnet\tools\.store\cs-script.cli\4.8.25\cs-script.cli\4.8.25\tools\net9.0\any\cscs.dll"
+```
+
+Sending syntaxer request:
+```txt
+D:\dev> syntaxer.cli.exe 18004 -op:project -script:D:\dev\spikes\WebCodeEditor\CodeMiro\test.cs
+file:D:\dev\spikes\WebCodeEditor\CodeMiro\test.cs
+file:D:\dev\cs-script\src\out\Windows\lib\global-usings.cs
+ref:C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.6\System.Private.CoreLib.dll
+ref:C:\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.6\System.Runtime.dll
+. . .
+```
+
 ## Basic Usage
 
 ## Command Options

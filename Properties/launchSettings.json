@@ -1,11 +1,33 @@
 {
     "profiles": {
-        "syntaxer.core": {
+        "syntaxer: wdbg": {
             "commandName": "Project",
             "commandLineArgs1": "",
-            "commandLineArgs": "-listen -port:18004 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.8.25\\cs-script.cli\\4.8.25\\tools\\net9.0\\any\\cscs.dll\""
+            "commandLineArgs": "-listen -port:18004 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.4\\cs-script.cli\\4.11.4\\tools\\net9.0\\any\\cscs.dll\""
             // "commandLineArgs": "-ls k *"
             // "commandLineArgs": "-listen -port:18000 -timeout:60000 -cscs_path:D:\\dev\\cs-script\\src\\cscs\\bin\\Debug\\net9.0\\cscs.dll"
+        },
+        "syntaxer: notepad++": {
+            "commandName": "Project",
+            "commandLineArgs1": "",
+            "commandLineArgs": "-listen -port:18001 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.4\\cs-script.cli\\4.11.4\\tools\\net9.0\\any\\cscs.dll\""
+        },
+
+        "syntaxer: sublime": {
+            "commandName": "Project",
+            "commandLineArgs1": "",
+            "commandLineArgs": "-listen -port:18000 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.5\\cs-script.cli\\4.11.5\\tools\\net9.0\\any\\cscs.dll\""
+        },
+
+        "syntaxer: VSCode.css": {
+            "commandName": "Project",
+            "commandLineArgs1": "",
+            "commandLineArgs": "-listen -port:18003 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.4\\cs-script.cli\\4.11.4\\tools\\net9.0\\any\\cscs.dll\""
+        },
+        "syntaxer: VSCode.codemap": {
+            "commandName": "Project",
+            "commandLineArgs1": "",
+            "commandLineArgs": "-listen -port:18002 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.4\\cs-script.cli\\4.11.4\\tools\\net9.0\\any\\cscs.dll\""
         }
     }
 }

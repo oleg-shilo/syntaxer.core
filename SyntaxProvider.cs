@@ -118,7 +118,7 @@ namespace Syntaxer
 
         internal static string Resolve(string script, int offset, bool rich_serialization)
         {
-            Output.WriteLine("Resolve");
+            Output.WriteLine($"Resolve(\"{System.IO.Path.GetFileName(script)}\",{offset})");
 
             DomRegion region = ResolveRaw(script, offset);
 
@@ -605,7 +605,7 @@ namespace Syntaxer
         internal static string GetTooltip(string scriptFile, int caret, string hint, bool shortHintedTooltips)
         {
             // Simplified API for ST3
-            Output.WriteLine("GetTooltip");
+            Output.WriteLine($"GetTooltip(\"{System.IO.Path.GetFileName(scriptFile)}\",{caret})");
             //Console.WriteLine("hint: " + hint);
 
             string result = null;
@@ -623,7 +623,8 @@ namespace Syntaxer
                     result = $"Directive: {css_directive.DisplayText}\n{css_directive.Description}";
                     result = result.NormalizeLineEnding().Replace("\r\n\r\n", "\r\n").TrimEnd();
                 }
-            };
+            }
+            ;
 
             ParseAsCssDirective(script.Content, caret,
                 loockupDirective,
@@ -761,7 +762,8 @@ namespace Syntaxer
                     result = $"Directive: {css_directive.DisplayText}\n{css_directive.Description}";
                     result = result.NormalizeLineEnding().Replace("\r\n\r\n", "\r\n").TrimEnd();
                 }
-            };
+            }
+            ;
 
             ParseAsCssDirective(script.Content, caret,
                 loockupDirective,
