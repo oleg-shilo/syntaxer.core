@@ -118,7 +118,7 @@ namespace Syntaxer
 
         internal static string Resolve(string script, int offset, bool rich_serialization)
         {
-            Output.WriteLine("Resolve");
+            Output.WriteLine($"Resolve(\"{System.IO.Path.GetFileName(script)}\",{offset})");
 
             DomRegion region = ResolveRaw(script, offset);
 
@@ -588,6 +588,7 @@ namespace Syntaxer
                     CSScriptHelper.DecorateIfRequired(ref script.Content, ref caret);
 
                 Project project = CSScriptHelper.GenerateProjectFor(script);
+                project.Refs = project.Refs.Concat([@"C:\Users\oleg\.dotnet\tools\.store\cs-script.cli\4.11.5\cs-script.cli\4.11.5\tools\net9.0\any\cscs.dll"]).ToArray(); // to avoid conflicts
                 var sources = project.Files
                                      .Where(f => f != project.Script)
                                      .Select(f => new Tuple<string, string>(File.ReadAllText(f), f))
@@ -605,7 +606,7 @@ namespace Syntaxer
         internal static string GetTooltip(string scriptFile, int caret, string hint, bool shortHintedTooltips)
         {
             // Simplified API for ST3
-            Output.WriteLine("GetTooltip");
+            Output.WriteLine($"GetTooltip(\"{System.IO.Path.GetFileName(scriptFile)}\",{caret})");
             //Console.WriteLine("hint: " + hint);
 
             string result = null;
@@ -623,7 +624,8 @@ namespace Syntaxer
                     result = $"Directive: {css_directive.DisplayText}\n{css_directive.Description}";
                     result = result.NormalizeLineEnding().Replace("\r\n\r\n", "\r\n").TrimEnd();
                 }
-            };
+            }
+            ;
 
             ParseAsCssDirective(script.Content, caret,
                 loockupDirective,
@@ -761,7 +763,8 @@ namespace Syntaxer
                     result = $"Directive: {css_directive.DisplayText}\n{css_directive.Description}";
                     result = result.NormalizeLineEnding().Replace("\r\n\r\n", "\r\n").TrimEnd();
                 }
-            };
+            }
+            ;
 
             ParseAsCssDirective(script.Content, caret,
                 loockupDirective,

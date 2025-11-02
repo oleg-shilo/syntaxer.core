@@ -24,10 +24,6 @@
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>syntaxer</ToolCommandName>
         <PackageOutputPath>./nupkg</PackageOutputPath>
-
-
-
-
     </PropertyGroup>
 
     <ItemGroup>
