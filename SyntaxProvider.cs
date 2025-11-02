@@ -588,6 +588,7 @@ namespace Syntaxer
                     CSScriptHelper.DecorateIfRequired(ref script.Content, ref caret);
 
                 Project project = CSScriptHelper.GenerateProjectFor(script);
+                project.Refs = project.Refs.Concat([@"C:\Users\oleg\.dotnet\tools\.store\cs-script.cli\4.11.5\cs-script.cli\4.11.5\tools\net9.0\any\cscs.dll"]).ToArray(); // to avoid conflicts
                 var sources = project.Files
                                      .Where(f => f != project.Script)
                                      .Select(f => new Tuple<string, string>(File.ReadAllText(f), f))
