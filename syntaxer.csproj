@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
         <RootNamespace>syntaxer</RootNamespace>
         <AssemblyName>syntaxer</AssemblyName>
-        <AssemblyVersion>3.2.4.0</AssemblyVersion>
-        <FileVersion>3.2.4.0</FileVersion>
-        <Version>3.2.4.0</Version>
-        <PackageReleaseNotes>- Added `-list` CLI switch</PackageReleaseNotes>
+        <AssemblyVersion>3.2.5.0</AssemblyVersion>
+        <FileVersion>3.2.5.0</FileVersion>
+        <Version>3.2.5.0</Version>
+        <PackageReleaseNotes>- Ported to .NET10</PackageReleaseNotes>
         <Description>C# syntax provider for CS-Script scripts. This service is created to allow the integration of C# syntax services with various extendibles IDE (e.g. VSCode, Notepad++, Sublime Text)</Description>
         <Authors>Oleg Shilo</Authors>
         <Copyright>(C) 2024 Oleg Shilo</Copyright>
@@ -60,12 +60,12 @@
 
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.11.0" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.11.0" />
-        <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.14.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.14.0" />
+        <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="10.0.0" />
     </ItemGroup>
 
 </Project>

@@ -7,14 +7,14 @@ rem win defender has "all clear" on the freshly built binaries (*.zip) and yet w
 rem are falsely identified as "Trojan:Script/Wacatac.B!ml". Even though winget checks that the file hash to ensure the correct/identical file is downloaded.
 rem This is the problem that has been reported top MS numerous times. Just google for "windows defender Trojan:Script/Wacatac.B!ml".
 
-// for now excluding syntaxer.cli, just to have less moving parts
+rem for now excluding syntaxer.cli, just to have less moving parts
 rem dotnet publish -o .\out\syntaxer.net9 -c Release -f net9.0 syntaxer.cli\syntaxer.cli.csproj
-dotnet publish -o .\out\syntaxer.net9 -c Release -f net9.0 syntaxer.csproj
+dotnet publish -o .\out\syntaxer.net10 -c Release -f net10.0 syntaxer.csproj
 
-cd .\out\syntaxer.net9
+cd .\out\syntaxer.net10
 echo cd: %cd%
 rem 7z.exe a -r "..\syntaxer.net9.7z" "*.*"
-7z.exe a -r "..\syntaxer.net9.zip" "*.*"
+7z.exe a -r "..\syntaxer.net10.zip" "*.*"
 cd ..\..
 
 rem dotnet publish -o .\out\syntaxer.net8 -c Release -f net8.0 syntaxer.cli\syntaxer.cli.csproj
