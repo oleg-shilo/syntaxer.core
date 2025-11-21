@@ -63,6 +63,9 @@ namespace Syntaxer
                 Console.WriteLine("------------");
                 Console.WriteLine("-detect");
                 Console.WriteLine("    Prints location of the detected CS-Script installation as well as its own assembly path.");
+                Console.WriteLine("-kill");
+                Console.WriteLine("    Terminates all currently running syntaxer services.");
+                Console.WriteLine("    It's an equivalent of `syntaxer -list kill *` command.");
                 Console.WriteLine("-list|-ls [<kill|k> [*]]");
                 Console.WriteLine("    Prints list of all currently running syntaxer services.");
                 Console.WriteLine("    kill|k - Allow user to select and terminate any running syntaxer service.");
@@ -74,6 +77,14 @@ namespace Syntaxer
             else if (args.Contains("-detect"))
             {
                 Console.WriteLine(CSScriptHelper.Detect());
+                return;
+            }
+            else if (args.FirstOrDefault() == "-kill")
+            {
+                var result = Runtime.GetScriptProcessLog();
+                foreach (var pid in result.processes.Select(x => x.pid).Where(x => x != 0))
+                    try { Process.GetProcessById(pid).Kill(); }
+                    catch { }
                 return;
             }
             else if (args.Contains("-list") || args.Contains("-ls"))

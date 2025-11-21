@@ -15,8 +15,8 @@
 
         "syntaxer: sublime": {
             "commandName": "Project",
-            "commandLineArgs1": "",
-            "commandLineArgs": "-listen -port:18000 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.5\\cs-script.cli\\4.11.5\\tools\\net9.0\\any\\cscs.dll\""
+            "commandLineArgs": "-kill",
+            "commandLineArgs1": "-listen -port:18000 -timeout:600000 \"-cscs_path:C:\\Users\\oleg\\.dotnet\\tools\\.store\\cs-script.cli\\4.11.5\\cs-script.cli\\4.11.5\\tools\\net9.0\\any\\cscs.dll\""
         },
 
         "syntaxer: VSCode.css": {
