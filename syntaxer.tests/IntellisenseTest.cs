@@ -15,6 +15,27 @@ namespace syntaxer.core.tests
     public class IntellisenseTest
     {
         [Fact]
+        public static void CSharp_14() => WithDisposable(scriptFile =>
+        {
+            (var caret, _) = """
+                using System;
+                public class Test
+                {
+                    public string Message
+                    {
+                        get;
+                        set => field = value ?? throw new ArgumentNullException(nameof(value) + field.Len|);
+                    }
+                }
+                """
+                .ToTestData(scriptFile);
+
+            var completions = TestServices.GetCompletion(scriptFile, caret);
+
+            Assert.NotNull(completions.Split(NewLine).FirstOrDefault(x => x.StartsWith("Length")));
+        });
+
+        [Fact]
         public static void Completion() => WithDisposable(scriptFile =>
         {
             (var caret, _) = @"using System;

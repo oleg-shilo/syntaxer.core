@@ -6,6 +6,8 @@ using Syntaxer;
 
 static class Global
 {
+    static string css_self = null;
+
     public static void WithDisposable(Action<string> action, bool local = false)
     {
         var script = Path.GetTempFileName();
@@ -28,9 +30,13 @@ static class Global
                 CSScriptProxy.cscs_path = cscs;
             else
             {
-                cscs = @"C:\ProgramData\chocolatey\lib\cs-script\tools\cscs.dll";
-                cscs = @"C:\Users\oleg\.dotnet\tools\.store\cs-script.cli\4.9.8\cs-script.cli\4.9.8\tools\net9.0\any\cscs.dll";
+                // cscs = @"C:\ProgramData\chocolatey\lib\cs-script\tools\cscs.dll";
+                // cscs = @"C:\Users\oleg\.dotnet\tools\.store\cs-script.cli\4.9.8\cs-script.cli\4.9.8\tools\net9.0\any\cscs.dll";
                 // cscs = Environment.GetEnvironmentVariable("CSSCRIPT_DIR")?.PathJoin("cscs.dll");
+
+                cscs = css_self ??
+                       (css_self = "css".Run("-self").output.Trim());
+
                 if (File.Exists(cscs))
                     CSScriptProxy.cscs_path = cscs;
                 else
